@@ -1,5 +1,3 @@
-console.log('main.js is running');
-
 // ------------------------- objects -------------------------
 /*   tile constructor
   *    color: white
@@ -12,6 +10,8 @@ function Tile (color, $DOM, row, column) {
   this.color = color;
   this.occupied = false;
   this.$DOMobj = $DOM;
+
+  // FIXME may need to delete row and column if unused
   this.row = row;
   this.column = column;
 }
@@ -20,19 +20,44 @@ function Tile (color, $DOM, row, column) {
   *    an array holding tiles
 */
 
+function TileTracker (row, column) {
+  this.row = row;
+  this.column = column;
+}
 
-/* gameState {
- *
- * ------------------------- properties -------------------------
- *
- * boardArray[x][y]
- *    tiles
- *       color:
- *       occupied: boolean
- *       $DOMlocation:
- *       row: position in board
- *       column: position in board
- *
+function SquareBlock (color) {
+  this.color = color;
+  this.tiles = [];
+  for(let i = 0; i < 2; i++) {
+    let row = [];
+    for(let j = 0; j < 2; j++) {
+      row.push(new TileTracker(i, j));
+    }
+    tiles.push(row);
+  }
+
+  this.moveDown = function() {
+  }
+
+  this.moveRight = function() {
+
+  }
+
+  this.moveLeft = function() {
+
+  }
+}
+
+
+const gameState = {
+ // ------------------------- properties -------------------------
+
+ /** boardArray[rows][columns] == [20 tiles][10 tiles]
+  *  made up of tiles {color, occupied, $DOMobj, row, column}
+  */
+  boardArray: [],
+
+ /*
  * $DOMboard = DOM obj of board array
  *
  * blockArray []
@@ -50,6 +75,7 @@ function Tile (color, $DOM, row, column) {
  *    make all of the gameBlocks using a random selector and array
  *
  * block move function
+ *   use window.setInterval
  *   may need different one for each type of block
  *   0. check if bottom blocks can move
  *        -- if reaches bottom of board or next blocks are occupied
@@ -67,12 +93,9 @@ function Tile (color, $DOM, row, column) {
  *
  *
  */
+}
 
 // ------------------------- functions -------------------------
-
-/* gameCreate function
- *    create the board with 20rows by 10columns number of tiles
-*/
 
 
 
@@ -86,9 +109,12 @@ gameCreate() triggered by start button on index.html
       if no loss, then go back to level create with increased level count
 */
 
+/**
+ * This function creates the board and saves it in the gameState object.
+ */
 function gameCreate() {
-  //create 20row x 10column board
-  let finalBoard = [];
+  //create 20row x 10column board using Tile constructor
+  gameState.boardArray.push()
   for(let i = 0; i < 20; i++) {
     let row = [];
     for(let j = 0; j < 10; j++) {
@@ -98,10 +124,16 @@ function gameCreate() {
       row.push(tile);
       document.getElementById('board').appendChild(tile.$DOMobj);
     }
-    finalBoard.push(row);
+    gameState.boardArray.push(row);
   }
+
+
+
   //call level create
+
+
+
 }
 
 
-//document.addEventListener('DOMContentLoaded', );
+document.addEventListener('DOMContentLoaded', console.log('main.js is running'));
