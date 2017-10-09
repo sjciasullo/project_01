@@ -1,21 +1,20 @@
-// ------------------------- notes -------------------------
-
-// Use a 2d array to store the gameBoard
-// using a gameState Object to wrap up current state
-//    board will be a property of gamestate
-//    board could be a 2d array made up of tile objects
-//    tile objects will have an occupied state,
-
-// then pieces that we add could have a location property -where they start in the array? or they have tiles and each tile has a location and border properties associated with it
+console.log('main.js is running');
 
 // ------------------------- objects -------------------------
 /*   tile constructor
   *    color: white
   *    occupied: false
   *    $DOMlocation: null;
-  *    x_loc: position in board
-  *    y_loc: position in board
+  *    row: position in board
+  *    column: position in board
 */
+function Tile (color, $DOM, row, column) {
+  this.color = color;
+  this.occupied = false;
+  this.$DOMobj = $DOM;
+  this.row = row;
+  this.column = column;
+}
 
 /*   gameBlocks constructor
   *    an array holding tiles
@@ -31,9 +30,15 @@
  *       color:
  *       occupied: boolean
  *       $DOMlocation:
- *       x_loc: position in board
- *       y_loc:
+ *       row: position in board
+ *       column: position in board
  *
+ * $DOMboard = DOM obj of board array
+ *
+ * blockArray []
+ *     an array made of all the gameBlocks for that level
+ *
+ * // may not need currentBlock -> may contain currentBlock in blockMove
  * currentBlock = null;
  *    holds the current block that's being moved in the board
  *
@@ -56,7 +61,10 @@
  * endMove function
  *    check if loss condition (block cannot fit on board)
  *    check if rows filled
+ *        if rows are filled then clear in boardArray, and move down all other rows
+ *        update DOM
  *    may return a number of rowscleared
+ *
  *
  */
 
@@ -66,6 +74,34 @@
  *    create the board with 20rows by 10columns number of tiles
 */
 
+
+
+// game logic
+/*
+gameCreate() triggered by start button on index.html
+  levelCreate(currentLevel)
+  --currentLevel = 1;
+  --create blocks for level
+      while(!endMove){ blockMove }
+      if no loss, then go back to level create with increased level count
+*/
+
+function gameCreate() {
+  //create 20row x 10column board
+  let finalBoard = [];
+  for(let i = 0; i < 20; i++) {
+    let row = [];
+    for(let j = 0; j < 10; j++) {
+      const tile = new Tile('white', document.createElement('div'), i, j);
+      tile.$DOMobj.className = 'tile';
+      tile.$DOMobj.style.backgroundColor = 'white';
+      row.push(tile);
+      document.getElementById('board').appendChild(tile.$DOMobj);
+    }
+    finalBoard.push(row);
+  }
+  //call level create
+}
 
 
 //document.addEventListener('DOMContentLoaded', );
