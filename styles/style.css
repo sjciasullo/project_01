@@ -1,0 +1,40 @@
+body{
+  background-color: #DDD;
+  font-family: arial;
+}
+
+header{
+  text-align: center;
+  margin: 30px auto;
+}
+
+h1{
+  font-size: 40px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+h2{
+  font-size: 20px;
+}
+
+ul{
+  margin: 5px auto;
+  border: 2px solid black;
+}
+
+li {
+  text-align: center;
+  padding: 10px 10px;
+}
+
+
+a {
+  color: #333;
+}
+
+/*board class
+
+tile class
+  floated left
+*/
