@@ -122,6 +122,8 @@ Square.prototype.moveLeft = function() {
 }
 
 function Cross() {
+  this.className = 'cross';
+  this.tiles = [];
 }
 
 function StairRt() {
@@ -261,11 +263,6 @@ const gameState = {
     return true;
   },
 
-  //checks to see if any rows are complete
-  checkRows: function() {
-
-  },
-
   //returns number of rows cleared to add to player's tally
   clearRows: function() {
     //loop through rows from bottom to top
@@ -359,12 +356,7 @@ const gameState = {
 
     //apply moveDown every amount of milliseconds
     let intervalN = window.setInterval(() => {
-      if(endGame) {
-        console.log('ur game is over, fool');
-        window.clearInterval(intervalN);
-        console.log('moveDown on interval has stopped');
-
-      } else if(currentBlock.checkDown()) {
+      if(currentBlock.checkDown()) {
         currentBlock.moveDown();
         console.log('the blocks are falling!');
       } else {
@@ -375,10 +367,11 @@ const gameState = {
         endGame = !(this.setBlockInBoard(currentBlock));
         console.log(`end game is ${endGame}`);
 
-        console.log('Check for full rows');
-
-
-        if(!endGame) {
+        if(endGame) {
+          console.log('ur game is over, fool');
+          window.clearInterval(intervalN);
+          console.log('moveDown on interval has stopped');
+        } else {
           console.log('create new block.');
           //update current block to front of blocksArray
           currentBlock = this.blockArray.shift();
@@ -387,11 +380,15 @@ const gameState = {
 
           //check for rows cleared
           this.linesCleared += this.clearRows();
+          if(this.linesCleared % 10 == 0) {
+            this.currentLevel += 1;
+            console.log(`current level has increased to ${this.currentLevel}`)
+          }
 
           this.addBlockToBoard(currentBlock);
         }
       }
-    }, 2000 / this.currentLevel);
+    }, 1500 / this.currentLevel);
 
   },
     // while(this.inProgress) {
