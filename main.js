@@ -22,7 +22,7 @@ function Tile ($DOM, row, column) {
 
 
 // TileTracker saves the position of tiles that are used for gameBlocks
-function TileTracker (row, column) {
+function TileTracker(row, column) {
   this.row = row;
   this.column = column;
 }
@@ -121,6 +121,24 @@ Square.prototype.moveLeft = function() {
   }
 }
 
+function Cross() {
+}
+
+function StairRt() {
+}
+
+function StairLt() {
+}
+
+function LBlock() {
+}
+
+function RBlock() {
+}
+
+function Line() {
+
+}
 
 const gameState = {
  // ------------------------- properties -------------------------
@@ -128,9 +146,11 @@ const gameState = {
  /** boardArray[rows][columns] == [20 tiles][10 tiles]
   *  made up of tiles {className, occupied, $DOMobj, row, column}
   */
-  boardArray: [],
-  blockArray: [],
-  currentLevel: 1,
+  boardArray: [], //array of tiles that make up game board
+  blockArray: [], //array of blocks to be added to gameBoard
+  currentLevel: 1, //increases when linesCleared % 10 == 0
+  linesCleared: 0, //increases if told to by checkClear
+  inProgress: true,
 
  /**
  * blockArray: [],
@@ -158,7 +178,7 @@ const gameState = {
     }
   },
 
- // create blockArray for each level
+ // create blockArray with numBlocks size and random assortment of blocks
   createBlocks: function(numBlocks) {
     //create blocks. call with 4 on level create
     for(let i = 0; i < numBlocks; i++) {
@@ -174,11 +194,11 @@ const gameState = {
           break;
         case 2:
           //create StairRight
-          console.log('make StairRight');
+          console.log('make StairRt');
           break;
         case 3:
           //create StairLeft
-          console.log('make StairLeft');
+          console.log('make StairLt');
           break;
         case 4:
           //create LBlock
@@ -195,7 +215,7 @@ const gameState = {
         default:
           console.log('Random number error in createBlocks.')
       }
-      //temporary makeSquare
+      // FIXME temporary makeSquare
       let block = new Square();
       this.blockArray.push(block);
     }
@@ -210,6 +230,88 @@ const gameState = {
       this.boardArray[colorRow][colorColumn].$DOMobj.classList.replace('unplayed', `${block.className}`);
     }
   },
+
+ // set block into position, for end of move
+  setBlockInBoard: function(block) {
+    // FIXME may need to change this if we change object tiles to 2d array
+    for(let i = 0; i < block.tiles.length; i++) {
+      let boardRow = block.tiles[i].row;
+      let boardCol = block.tiles[i].column;
+      this.boardArray[boardRow][boardCol].occupied = true;
+    }
+    console.log('block commited to board');
+  },
+
+  runGame: function() {
+    //create 4 blocks, 1 to be added and 3 for upcoming blocks
+    this.createBlocks(4);
+
+    let currentBlock = this.blockArray.shift();
+    this.addBlockToBoard(currentBlock);
+
+    //add new block to blockArray
+    this.createBlocks(1);
+    // FIXME update upcoming block viewer
+
+    //apply moveDown every amount of milliseconds
+    window.setInterval(() => {
+      if(currentBlock.checkDown()) {
+        currentBlock.moveDown();
+        console.log('the blocks are falling!');
+      } else {
+        console.log('Block finished. Creating new block');
+        //set current block in board
+        this.setBlockInBoard(currentBlock);
+        //update current block to front of blocksArray
+        currentBlock = this.blockArray.shift();
+        this.addBlockToBoard(currentBlock);
+        //add block to blocksArray
+        this.createBlocks(1);
+      }
+    }, 2000 / this.currentLevel);
+
+    window.addEventListener('keydown', (event) => {
+      switch (event.key) {
+        case 'ArrowRight':
+          currentBlock.moveRight();
+          break;
+        case 'ArrowLeft':
+          currentBlock.moveLeft();
+          break;
+        case 'ArrowDown':
+          currentBlock.moveDown();
+          break;
+        case 'm':
+        //rotate right
+          break;
+        case 'n':
+        //rotate left
+          break;
+        case ' ':
+        //store block in queue
+          break;
+      }
+    });
+  },
+    // while(this.inProgress) {
+    //   //send first block to board
+    //   let currentBlock = this.blockArray.shift();
+    //   this.addBlockToBoard(currentBlock);
+
+    //   //add new block to blockArray
+    //   this.createBlocks(1);
+    //   // FIXME update upcoming block viewer
+
+    //   //apply moveDown every amount of milliseconds
+    //   window.setInterval(() => {
+    //     currentBlock.moveDown();
+    //   }, 1 / this.currentLevel);
+
+    //   //failsafe return for now
+    //   return true;
+    //   //when block can't moveDown anymore, commit it to board and
+    // }
+
 /**
  * level create function
  *    make all of the gameBlocks using a random selector and array
@@ -258,31 +360,6 @@ function gameCreate() {
 
   //create level while block.. create levelBlocksArray and pop a block into current block
 
-  //temporary new block here, will pass in from blocksArray
-  let currentBlock = new Square();
-  gameState.addBlockToBoard(currentBlock);
-  window.addEventListener('keydown', (event) => {
-    switch (event.key) {
-      case 'ArrowRight':
-        currentBlock.moveRight();
-        break;
-      case 'ArrowLeft':
-        currentBlock.moveLeft();
-        break;
-      case 'ArrowDown':
-        currentBlock.moveDown();
-        break;
-      case 'm':
-      //rotate right
-        break;
-      case 'n':
-      //rotate left
-        break;
-      case ' ':
-      //store block in queue
-        break;
-    }
-  });
   //call level create
 }
 
@@ -290,9 +367,7 @@ document.addEventListener('DOMContentLoaded', console.log('call gameCreate() her
 
 /* testing
 gameCreate();
-let square = new Square();
-gameState.addBlockToBoard(square);
-square.moveDown();
+gameState.runGame();
 */
 
 
