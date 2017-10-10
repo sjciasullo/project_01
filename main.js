@@ -40,15 +40,29 @@ function SquareBlock () {
     }
   }
 
+  //returns false if next block cannot be moved to
+  this.checkDown = function() {
+    //check to see if reached bottom row or next tile is filled
+    for(let i = 2; i < 4; i++) {
+      if(this.tiles[i].row == 19 ||
+        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].occupied){
+        return false;
+      }
+    }
+    return true;
+  }
+
   this.moveDown = function() {
-    for(let i = 0; i < 2; i++) {
+    if(this.checkDown()) {
+      for(let i = 0; i < 2; i++) {
       //change top two blocks to unplayed class and increment tracker
       gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
       this.tiles[i].row += 1;
-    }
-    for(let i = 2; i < 4; i++) {
-      this.tiles[i].row += 1;
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+      }
+      for(let i = 2; i < 4; i++) {
+        this.tiles[i].row += 1;
+        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+      }
     }
   }
 
