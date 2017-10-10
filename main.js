@@ -40,12 +40,12 @@ function SquareBlock () {
     }
   }
 
-  //returns false if next block cannot be moved to
+  //returns false if next block cannot be moved down
   this.checkDown = function() {
     //check to see if reached bottom row or next tile is filled
     for(let i = 2; i < 4; i++) {
       if(this.tiles[i].row == 19 ||
-        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].occupied){
+        gameState.boardArray[this.tiles[i].row + 1][this.tiles[i].column].occupied){
         return false;
       }
     }
@@ -66,8 +66,30 @@ function SquareBlock () {
     }
   }
 
-  this.moveRight = function() {
+  this.checkRight = function() {
+    //check to see if reached right border or next tile is filled
+    //(checks top right and bottom right tiles)
+    for(let i = 1; i < 4; i+=2) {
+      if(this.tiles[i].column == 9 ||
+        gameState.boardArray[this.tiles[i].row][this.tiles[i].column + 1].occupied){
+        return false;
+      }
+    }
+    return true;
+  }
 
+  this.moveRight = function() {
+    if(this.checkRight()) {
+      for(let i = 0; i < 4; i+=2) {
+      //change left two blocks to unplayed class and increment tracker
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+      this.tiles[i].column += 1;
+      }
+      for(let i = 1; i < 4; i+=2) {
+        this.tiles[i].column += 1;
+        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+      }
+    }
   }
 
   this.moveLeft = function() {
