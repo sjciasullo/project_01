@@ -261,6 +261,68 @@ const gameState = {
     return true;
   },
 
+  //checks to see if any rows are complete
+  checkRows: function() {
+
+  },
+
+  //returns number of rows cleared to add to player's tally
+  clearRows: function() {
+    //loop through rows from bottom to top
+    let firstClear = -1;
+    let numClears = 0;
+    let rowClear = true;
+
+    //first check to see if any rows are full
+    let row = 0;
+    while(row < 20) {
+      rowClear = true;
+      let column = 0;
+      //if reaches an unoccopied tile, goes to next row
+      while(rowClear && column < 10) {
+        rowClear = this.boardArray[row][column].occupied;
+        ++column;
+      }
+      if(rowClear) {
+        if(numClears == 0) {
+          firstClear = row;
+        }
+        ++numClears;
+      }
+      row++;
+    }
+    console.log(`found ${numClears} full rows starting at row ${firstClear}`);
+    // if there were any cleared rows, must update this.tileArray and DOM
+    const $board = document.getElementById('board');
+    if(numClears > 0) {
+      //take out full rows and delete them from the DOM
+      let deletedRows = this.boardArray.splice(firstClear, numClears);
+      for(let i = 0; i < numClears; i++) {
+        for(let j = 0; j < 10; j++) {
+          $board.removeChild(deletedRows[i][j].$DOMobj);
+        }
+      }
+
+      let $before = document.getElementsByClassName('tile')[0];
+      for(let i = numClears-1; i >= 0; i--) {
+        this.boardArray.unshift([]);
+        let $before = document.getElementsByClassName('tile')[0];
+        for(let j = 0; j < 10; j++) {
+          const tile = new Tile(document.createElement('div'), i, j);
+          tile.$DOMobj.className = 'tile unplayed';
+          this.boardArray[0].push(tile)
+        }
+      }
+      for(let i = 0; i < numClears; i++) {
+        for(let j=0; j < 10; j++) {
+          $board.insertBefore(this.boardArray[i][j].$DOMobj, $before);
+        }
+      }
+    }
+
+    return numClears;
+  },
+
   runGame: function() {
     //create 4 blocks, 1 to be added and 3 for upcoming blocks
     let endGame = false;
@@ -324,10 +386,8 @@ const gameState = {
           this.createBlocks(1);
 
           //check for rows cleared
+          this.linesCleared += this.clearRows();
 
-          //check for end
-
-          //
           this.addBlockToBoard(currentBlock);
         }
       }
