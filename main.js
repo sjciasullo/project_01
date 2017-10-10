@@ -119,8 +119,6 @@ function SquareBlock () {
   }
 }
 
-
-
 const gameState = {
  // ------------------------- properties -------------------------
 
@@ -130,19 +128,34 @@ const gameState = {
   boardArray: [],
 
  /**
- * $DOMboard = DOM obj of board array
  *
- * blockArray []
+ * blockArray: [],
  *     an array made of all the gameBlocks for that level
  *
  * // may not need currentBlock -> may contain currentBlock in blockMove
  * currentBlock = null;
  *    holds the current block that's being moved in the board
  *
- * currentLevel = 0;
+ * currentLevel: 0,
  *
  * ------------------------- methods -------------------------
  */
+ // create gameBoard
+  createBoard: function() {
+    //gameState.boardArray.push()
+    for(let i = 0; i < 20; i++) {
+      let row = [];
+      for(let j = 0; j < 10; j++) {
+        const tile = new Tile(document.createElement('div'), i, j);
+        tile.$DOMobj.className = 'tile unplayed';
+        row.push(tile);
+        document.getElementById('board').appendChild(tile.$DOMobj);
+      }
+      this.boardArray.push(row);
+    }
+  },
+
+
 
  // pass in a block to add to boardArray
   addBlockToBoard: function(block) {
@@ -150,7 +163,7 @@ const gameState = {
       //address to change color via boardArray
       const colorRow = block.tiles[i].row;
       const colorColumn = block.tiles[i].column;
-      gameState.boardArray[colorRow][colorColumn].$DOMobj.classList.replace('unplayed', `${block.className}`);
+      this.boardArray[colorRow][colorColumn].$DOMobj.classList.replace('unplayed', `${block.className}`);
     }
   }
 /**
@@ -197,17 +210,7 @@ gameCreate() triggered by start button on index.html
  */
 function gameCreate() {
   //create 20row x 10column board using Tile constructor
-  gameState.boardArray.push()
-  for(let i = 0; i < 20; i++) {
-    let row = [];
-    for(let j = 0; j < 10; j++) {
-      const tile = new Tile(document.createElement('div'), i, j);
-      tile.$DOMobj.className = 'tile unplayed';
-      row.push(tile);
-      document.getElementById('board').appendChild(tile.$DOMobj);
-    }
-    gameState.boardArray.push(row);
-  }
+  gameState.createBoard();
 
 
 
@@ -216,7 +219,6 @@ function gameCreate() {
 
 
 }
-
 
 document.addEventListener('DOMContentLoaded', console.log('main.js is running'));
 
