@@ -92,8 +92,30 @@ function SquareBlock () {
     }
   }
 
-  this.moveLeft = function() {
+  this.checkLeft = function() {
+    //check to see if reached left border or next tile is filled
+    //(checks top right and bottom right tiles)
+    for(let i = 0; i < 4; i+=2) {
+      if(this.tiles[i].column == 0 ||
+        gameState.boardArray[this.tiles[i].row][this.tiles[i].column - 1].occupied){
+        return false;
+      }
+    }
+    return true;
+  }
 
+  this.moveLeft = function() {
+    if(this.checkLeft()) {
+      for(let i = 1; i < 4; i+=2) {
+      //change right two blocks to unplayed class and increment tracker
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+      this.tiles[i].column -= 1;
+      }
+      for(let i = 0; i < 4; i+=2) {
+        this.tiles[i].column -= 1;
+        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+      }
+    }
   }
 }
 
