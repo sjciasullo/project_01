@@ -178,6 +178,29 @@ Cross.prototype.moveRight = function() {
   }
 }
 
+Cross.prototype.checkLeft = function() {
+  //check to the left of each tile to see if it can move left
+  for(coord of this.tiles) {
+    if(coord.column == 0 ||
+      gameState.boardArray[coord.row][coord.column - 1].occupied) {
+      return false;
+    }
+  }
+  return true;
+}
+
+Cross.prototype.moveLeft = function() {
+  if(this.checkLeft()) {
+    for(coord of this.tiles) {
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+    }
+    for(coord of this.tiles) {
+      coord.column -= 1;
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+    }
+  }
+}
+
 // gameCreate();
 // let cross = new Cross();
 // gameState.addBlockToBoard(cross);
