@@ -21,8 +21,8 @@ function Tile ($DOM, row, column) {
 */
 
 
-// TileTracker saves the position of tiles that are used for gameBlocks
-function TileTracker(row, column) {
+// Coordinate saves the position of tiles that are used for gameBlocks
+function Coordinate(row, column) {
   this.row = row;
   this.column = column;
 }
@@ -36,7 +36,7 @@ function Square () {
   for(let i = 0; i < 2; i++) {
     for(let j = 0; j < 2; j++) {
       //add 4 to j to start in middle of board
-      let tile = new TileTracker(i, j + 4);
+      let tile = new Coordinate(i, j + 4);
       this.tiles.push(tile);
     }
   }
@@ -124,9 +124,37 @@ Square.prototype.moveLeft = function() {
 function Cross() {
   this.className = 'cross';
   this.tiles = [];
+  this.orientation = 'up';
+  //set tiles to up position
+  this.tiles.push(new Coordinate(1,4));
+  this.tiles.push(new Coordinate(1,5));
+  this.tiles.push(new Coordinate(1,6));
+  this.tiles.push(new Coordinate(0,5));
+}
+
+Cross.prototype.checkDown = function() {
+  //check below each tile to see if it can move down
+  for(coord of this.tiles) {
+    if(coord.row == 19 ||
+      gameState.boardArray[coord.row + 1][coord.column].occupied) {
+      return false;
+    }
+  }
+  return true;
+}
+
+Cross.prototype.moveDown = function() {
+  if(this.checkDown()) {
+    for(coord of this.tiles) {
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+      coord.row += 1;
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+    }
+  }
 }
 
 function StairRt() {
+
 }
 
 function StairLt() {
