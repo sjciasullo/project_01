@@ -29,16 +29,9 @@ li {
   padding: 10px 10px;
 }
 
-
 a {
   color: #333;
 }
-
-/*board class
-
-tile class
-  floated left
-*/
 
 #board {
   border: 2px solid black;
@@ -55,3 +48,14 @@ tile class
   width: 25px;
   border: 1px solid black;
 }
+
+.unplayed {
+  background-color: white;
+}
+
+.square {
+  background-color: red;
+}
+
+/*FIXME add classes for new block types
+*/

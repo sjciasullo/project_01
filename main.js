@@ -1,13 +1,12 @@
 // ------------------------- objects -------------------------
 /*   tile constructor
-  *    color: white
+  *    className: 'unplayed' // className for correct color
   *    occupied: false
   *    $DOMlocation: null;
   *    row: position in board
   *    column: position in board
 */
-function Tile (color, $DOM, row, column) {
-  this.color = color;
+function Tile ($DOM, row, column) {
   this.occupied = false;
   this.$DOMobj = $DOM;
 
@@ -20,23 +19,29 @@ function Tile (color, $DOM, row, column) {
   *    an array holding tiles
 */
 
+
+// TileTracker saves the position of tiles that are used for gameBlocks
 function TileTracker (row, column) {
   this.row = row;
   this.column = column;
 }
 
-function SquareBlock (color) {
-  this.color = color;
+// SquareBlock constructor, will modify gameState.board for init and moves
+function SquareBlock () {
+  this.className = 'square';
+  //tiles could be 2d, but 1d for generalization of adding block to board
   this.tiles = [];
+  // set tiles to beginning of board
   for(let i = 0; i < 2; i++) {
-    let row = [];
     for(let j = 0; j < 2; j++) {
-      row.push(new TileTracker(i, j));
+      let tile = new TileTracker(i, j);
+      this.tiles.push(tile);
     }
-    tiles.push(row);
   }
 
   this.moveDown = function() {
+    //change top two tiles background color to white
+    //
   }
 
   this.moveRight = function() {
@@ -49,15 +54,16 @@ function SquareBlock (color) {
 }
 
 
+
 const gameState = {
  // ------------------------- properties -------------------------
 
  /** boardArray[rows][columns] == [20 tiles][10 tiles]
-  *  made up of tiles {color, occupied, $DOMobj, row, column}
+  *  made up of tiles {className, occupied, $DOMobj, row, column}
   */
   boardArray: [],
 
- /*
+ /**
  * $DOMboard = DOM obj of board array
  *
  * blockArray []
@@ -70,7 +76,18 @@ const gameState = {
  * currentLevel = 0;
  *
  * ------------------------- methods -------------------------
- *
+ */
+
+ // pass in a block to add to boardArray
+  addBlockToBoard: function(block) {
+    for(let i = 0; i < block.tiles.length; i++) {
+      //address to change color via boardArray
+      const colorRow = block.tiles[i].row;
+      const colorColumn = block.tiles[i].column;
+      gameState.boardArray[colorRow][colorColumn].$DOMobj.classList.replace('unplayed', `${block.className}`);
+    }
+  }
+/**
  * level create function
  *    make all of the gameBlocks using a random selector and array
  *
@@ -118,9 +135,8 @@ function gameCreate() {
   for(let i = 0; i < 20; i++) {
     let row = [];
     for(let j = 0; j < 10; j++) {
-      const tile = new Tile('white', document.createElement('div'), i, j);
-      tile.$DOMobj.className = 'tile';
-      tile.$DOMobj.style.backgroundColor = 'white';
+      const tile = new Tile(document.createElement('div'), i, j);
+      tile.$DOMobj.className = 'tile unplayed';
       row.push(tile);
       document.getElementById('board').appendChild(tile.$DOMobj);
     }
