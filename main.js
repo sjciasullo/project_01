@@ -232,43 +232,27 @@ const gameState = {
   },
 
  // set block into position, for end of move
+ // returns true if valid entry, false if cannot enter
   setBlockInBoard: function(block) {
     // FIXME may need to change this if we change object tiles to 2d array
     for(let i = 0; i < block.tiles.length; i++) {
       let boardRow = block.tiles[i].row;
       let boardCol = block.tiles[i].column;
-      this.boardArray[boardRow][boardCol].occupied = true;
+      if(this.boardArray[boardRow][boardCol].occupied) {return false;}
+      else {this.boardArray[boardRow][boardCol].occupied = true;}
     }
     console.log('block commited to board');
+    return true;
   },
 
   runGame: function() {
     //create 4 blocks, 1 to be added and 3 for upcoming blocks
+    let endGame = false;
+
     this.createBlocks(4);
 
     let currentBlock = this.blockArray.shift();
     this.addBlockToBoard(currentBlock);
-
-    //add new block to blockArray
-    this.createBlocks(1);
-    // FIXME update upcoming block viewer
-
-    //apply moveDown every amount of milliseconds
-    window.setInterval(() => {
-      if(currentBlock.checkDown()) {
-        currentBlock.moveDown();
-        console.log('the blocks are falling!');
-      } else {
-        console.log('Block finished. Creating new block');
-        //set current block in board
-        this.setBlockInBoard(currentBlock);
-        //update current block to front of blocksArray
-        currentBlock = this.blockArray.shift();
-        this.addBlockToBoard(currentBlock);
-        //add block to blocksArray
-        this.createBlocks(1);
-      }
-    }, 2000 / this.currentLevel);
 
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
@@ -292,6 +276,47 @@ const gameState = {
           break;
       }
     });
+
+    // FIXME update upcoming block viewer
+
+    //apply moveDown every amount of milliseconds
+    let intervalN = window.setInterval(() => {
+      if(endGame) {
+        console.log('ur game is over, fool');
+        window.clearInterval(intervalN);
+        console.log('moveDown on interval has stopped');
+
+      } else if(currentBlock.checkDown()) {
+        currentBlock.moveDown();
+        console.log('the blocks are falling!');
+      } else {
+        console.log('Block finished');
+
+        //set current block in board
+        console.log('Check for end by setting in board');
+        endGame = !(this.setBlockInBoard(currentBlock));
+        console.log(`end game is ${endGame}`);
+
+        console.log('Check for full rows');
+
+
+        if(!endGame) {
+          console.log('create new block.');
+          //update current block to front of blocksArray
+          currentBlock = this.blockArray.shift();
+          //add block to blocksArray
+          this.createBlocks(1);
+
+          //check for rows cleared
+
+          //check for end
+
+          //
+          this.addBlockToBoard(currentBlock);
+        }
+      }
+    }, 2000 / this.currentLevel);
+
   },
     // while(this.inProgress) {
     //   //send first block to board
