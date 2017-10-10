@@ -163,32 +163,40 @@ const gameState = {
     //create blocks. call with 4 on level create
     for(let i = 0; i < numBlocks; i++) {
       //switch based on random number between 0 and 6
-      switch (Math.floor(Math.random * 7)) {
+      switch (Math.floor(Math.random() * 7)) {
         case 0:
           //create Square
-
+          console.log('make square');
           break;
         case 1:
           //create Cross
+          console.log('make cross');
           break;
         case 2:
           //create StairRight
+          console.log('make StairRight');
           break;
         case 3:
           //create StairLeft
+          console.log('make StairLeft');
           break;
         case 4:
           //create LBlock
+          console.log('make LBlock');
           break;
         case 5:
           //create JBlock
+          console.log('make JBlock');
           break;
         case 6:
           //create Line
+          console.log('make Line');
           break;
         default:
           console.log('Random number error in createBlocks.')
       }
+      //temporary makeSquare
+      let block = new Square();
       this.blockArray.push(block);
     }
   },
@@ -254,7 +262,6 @@ function gameCreate() {
   let currentBlock = new Square();
   gameState.addBlockToBoard(currentBlock);
   window.addEventListener('keydown', (event) => {
-    console.log(`this works and the ${event.key} is pressed`);
     switch (event.key) {
       case 'ArrowRight':
         currentBlock.moveRight();
