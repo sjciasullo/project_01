@@ -1,3 +1,4 @@
+ console.log('main.js is running');
 // ------------------------- objects -------------------------
 /*   tile constructor
   *    className: 'unplayed' // className for correct color
@@ -126,20 +127,19 @@ const gameState = {
   *  made up of tiles {className, occupied, $DOMobj, row, column}
   */
   boardArray: [],
+  currentLevel: 0,
 
  /**
- *
  * blockArray: [],
  *     an array made of all the gameBlocks for that level
  *
  * // may not need currentBlock -> may contain currentBlock in blockMove
  * currentBlock = null;
  *    holds the current block that's being moved in the board
- *
- * currentLevel: 0,
- *
- * ------------------------- methods -------------------------
  */
+
+ // ------------------------- methods -------------------------
+
  // create gameBoard
   createBoard: function() {
     //gameState.boardArray.push()
@@ -155,8 +155,6 @@ const gameState = {
     }
   },
 
-
-
  // pass in a block to add to boardArray
   addBlockToBoard: function(block) {
     for(let i = 0; i < block.tiles.length; i++) {
@@ -165,7 +163,7 @@ const gameState = {
       const colorColumn = block.tiles[i].column;
       this.boardArray[colorRow][colorColumn].$DOMobj.classList.replace('unplayed', `${block.className}`);
     }
-  }
+  },
 /**
  * level create function
  *    make all of the gameBlocks using a random selector and array
@@ -212,15 +210,38 @@ function gameCreate() {
   //create 20row x 10column board using Tile constructor
   gameState.createBoard();
 
+  //create level while block.. create levelBlocksArray and pop a block into current block
 
-
+  //temporary new block here, will pass in from blocksArray
+  let currentBlock = new SquareBlock();
+  gameState.addBlockToBoard(currentBlock);
+  window.addEventListener('keydown', (event) => {
+    console.log(`this works and the ${event.key} is pressed`);
+    switch (event.key) {
+      case 'ArrowRight':
+        currentBlock.moveRight();
+        break;
+      case 'ArrowLeft':
+        currentBlock.moveLeft();
+        break;
+      case 'ArrowDown':
+        currentBlock.moveDown();
+        break;
+      case 'm':
+      //rotate right
+        break;
+      case 'n':
+      //rotate left
+        break;
+      case ' ':
+      //store block in queue
+        break;
+    }
+  });
   //call level create
-
-
-
 }
 
-document.addEventListener('DOMContentLoaded', console.log('main.js is running'));
+document.addEventListener('DOMContentLoaded', console.log('call gameCreate() here using start button'));
 
 /* testing
 gameCreate();
