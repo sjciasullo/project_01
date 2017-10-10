@@ -163,18 +163,34 @@ const gameState = {
 
  // ------------------------- methods -------------------------
 
- // create gameBoard
-  createBoard: function() {
-    //gameState.boardArray.push()
-    for(let i = 0; i < 20; i++) {
+ // return 2d array with numRows of rows of tiles
+  createRows: function(numRows) {
+    let finalArr = [];
+    for(let i = 0; i < numRows; i++) {
       let row = [];
       for(let j = 0; j < 10; j++) {
         const tile = new Tile(document.createElement('div'), i, j);
         tile.$DOMobj.className = 'tile unplayed';
         row.push(tile);
-        document.getElementById('board').appendChild(tile.$DOMobj);
+        // FIXME if we are not adding children here then how do we do so later?
+        //document.getElementById('board').appendChild(tile.$DOMobj);
       }
-      this.boardArray.push(row);
+      finalArr.push(row);
+    }
+    return finalArr;
+  },
+
+ // create gameBoard
+  createBoard: function() {
+    const numRows = 20;
+    const numColumns = 10;
+    this.boardArray = this.createRows(numRows);
+    console.log(this.boardArray);
+    const $board = document.getElementById('board');
+    for(let i = 0; i < numRows; i++) {
+      for(let j = 0; j < numColumns; j++) {
+        $board.appendChild(this.boardArray[i][j].$DOMobj);
+      }
     }
   },
 
