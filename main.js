@@ -27,98 +27,100 @@ function TileTracker (row, column) {
   this.column = column;
 }
 
-// FIXME may prototype this constructor for all blockTypes
-// SquareBlock constructor, will modify gameState.board for init and moves
-function SquareBlock () {
+// Square constructor, will modify gameState.board for init and moves
+function Square () {
   this.className = 'square';
   //tiles could be 2d, but 1d for generalization of adding block to board
   this.tiles = [];
   // set tiles to beginning of board
   for(let i = 0; i < 2; i++) {
     for(let j = 0; j < 2; j++) {
-      let tile = new TileTracker(i, j);
+      //add 4 to j to start in middle of board
+      let tile = new TileTracker(i, j + 4);
       this.tiles.push(tile);
     }
   }
+}
 
-  //returns false if next block cannot be moved down
-  this.checkDown = function() {
-    //check to see if reached bottom row or next tile is filled
+// Square methods
+//returns false if next block cannot be moved down
+Square.prototype.checkDown = function() {
+  //check to see if reached bottom row or next tile is filled
+  for(let i = 2; i < 4; i++) {
+    if(this.tiles[i].row == 19 ||
+      gameState.boardArray[this.tiles[i].row + 1][this.tiles[i].column].occupied){
+      return false;
+    }
+  }
+  return true;
+}
+
+Square.prototype.moveDown = function() {
+  if(this.checkDown()) {
+    for(let i = 0; i < 2; i++) {
+    //change top two blocks to unplayed class and increment tracker
+    gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+    this.tiles[i].row += 1;
+    }
     for(let i = 2; i < 4; i++) {
-      if(this.tiles[i].row == 19 ||
-        gameState.boardArray[this.tiles[i].row + 1][this.tiles[i].column].occupied){
-        return false;
-      }
-    }
-    return true;
-  }
-
-  this.moveDown = function() {
-    if(this.checkDown()) {
-      for(let i = 0; i < 2; i++) {
-      //change top two blocks to unplayed class and increment tracker
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
       this.tiles[i].row += 1;
-      }
-      for(let i = 2; i < 4; i++) {
-        this.tiles[i].row += 1;
-        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
-      }
-    }
-  }
-
-  this.checkRight = function() {
-    //check to see if reached right border or next tile is filled
-    //(checks top right and bottom right tiles)
-    for(let i = 1; i < 4; i+=2) {
-      if(this.tiles[i].column == 9 ||
-        gameState.boardArray[this.tiles[i].row][this.tiles[i].column + 1].occupied){
-        return false;
-      }
-    }
-    return true;
-  }
-
-  this.moveRight = function() {
-    if(this.checkRight()) {
-      for(let i = 0; i < 4; i+=2) {
-      //change left two blocks to unplayed class and increment tracker
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
-      this.tiles[i].column += 1;
-      }
-      for(let i = 1; i < 4; i+=2) {
-        this.tiles[i].column += 1;
-        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
-      }
-    }
-  }
-
-  this.checkLeft = function() {
-    //check to see if reached left border or next tile is filled
-    //(checks top right and bottom right tiles)
-    for(let i = 0; i < 4; i+=2) {
-      if(this.tiles[i].column == 0 ||
-        gameState.boardArray[this.tiles[i].row][this.tiles[i].column - 1].occupied){
-        return false;
-      }
-    }
-    return true;
-  }
-
-  this.moveLeft = function() {
-    if(this.checkLeft()) {
-      for(let i = 1; i < 4; i+=2) {
-      //change right two blocks to unplayed class and increment tracker
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
-      this.tiles[i].column -= 1;
-      }
-      for(let i = 0; i < 4; i+=2) {
-        this.tiles[i].column -= 1;
-        gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
-      }
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
     }
   }
 }
+
+Square.prototype.checkRight = function() {
+  //check to see if reached right border or next tile is filled
+  //(checks top right and bottom right tiles)
+  for(let i = 1; i < 4; i+=2) {
+    if(this.tiles[i].column == 9 ||
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column + 1].occupied){
+      return false;
+    }
+  }
+  return true;
+}
+
+Square.prototype.moveRight = function() {
+  if(this.checkRight()) {
+    for(let i = 0; i < 4; i+=2) {
+    //change left two blocks to unplayed class and increment tracker
+    gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+    this.tiles[i].column += 1;
+    }
+    for(let i = 1; i < 4; i+=2) {
+      this.tiles[i].column += 1;
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+    }
+  }
+}
+
+Square.prototype.checkLeft = function() {
+  //check to see if reached left border or next tile is filled
+  //(checks top right and bottom right tiles)
+  for(let i = 0; i < 4; i+=2) {
+    if(this.tiles[i].column == 0 ||
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column - 1].occupied){
+      return false;
+    }
+  }
+  return true;
+}
+
+Square.prototype.moveLeft = function() {
+  if(this.checkLeft()) {
+    for(let i = 1; i < 4; i+=2) {
+    //change right two blocks to unplayed class and increment tracker
+    gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+    this.tiles[i].column -= 1;
+    }
+    for(let i = 0; i < 4; i+=2) {
+      this.tiles[i].column -= 1;
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+    }
+  }
+}
+
 
 const gameState = {
  // ------------------------- properties -------------------------
@@ -127,7 +129,8 @@ const gameState = {
   *  made up of tiles {className, occupied, $DOMobj, row, column}
   */
   boardArray: [],
-  currentLevel: 0,
+  blockArray: [],
+  currentLevel: 1,
 
  /**
  * blockArray: [],
@@ -152,6 +155,41 @@ const gameState = {
         document.getElementById('board').appendChild(tile.$DOMobj);
       }
       this.boardArray.push(row);
+    }
+  },
+
+ // create blockArray for each level
+  createBlocks: function(numBlocks) {
+    //create blocks. call with 4 on level create
+    for(let i = 0; i < numBlocks; i++) {
+      //switch based on random number between 0 and 6
+      switch (Math.floor(Math.random * 7)) {
+        case 0:
+          //create Square
+
+          break;
+        case 1:
+          //create Cross
+          break;
+        case 2:
+          //create StairRight
+          break;
+        case 3:
+          //create StairLeft
+          break;
+        case 4:
+          //create LBlock
+          break;
+        case 5:
+          //create JBlock
+          break;
+        case 6:
+          //create Line
+          break;
+        default:
+          console.log('Random number error in createBlocks.')
+      }
+      this.blockArray.push(block);
     }
   },
 
@@ -213,7 +251,7 @@ function gameCreate() {
   //create level while block.. create levelBlocksArray and pop a block into current block
 
   //temporary new block here, will pass in from blocksArray
-  let currentBlock = new SquareBlock();
+  let currentBlock = new Square();
   gameState.addBlockToBoard(currentBlock);
   window.addEventListener('keydown', (event) => {
     console.log(`this works and the ${event.key} is pressed`);
@@ -245,7 +283,7 @@ document.addEventListener('DOMContentLoaded', console.log('call gameCreate() her
 
 /* testing
 gameCreate();
-let square = new SquareBlock();
+let square = new Square();
 gameState.addBlockToBoard(square);
 square.moveDown();
 */
