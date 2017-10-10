@@ -147,11 +147,40 @@ Cross.prototype.moveDown = function() {
   if(this.checkDown()) {
     for(coord of this.tiles) {
       gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+    }
+    for(coord of this.tiles) {
       coord.row += 1;
       gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace('unplayed', `${this.className}`);
     }
   }
 }
+
+Cross.prototype.checkRight = function() {
+  //check to the right of each tile to see if it can move right
+  for(coord of this.tiles) {
+    if(coord.column == 9 ||
+      gameState.boardArray[coord.row][coord.column + 1].occupied) {
+      return false;
+    }
+  }
+  return true;
+}
+
+Cross.prototype.moveRight = function() {
+  if(this.checkRight()) {
+    for(coord of this.tiles) {
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+    }
+    for(coord of this.tiles) {
+      coord.column += 1;
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+    }
+  }
+}
+
+// gameCreate();
+// let cross = new Cross();
+// gameState.addBlockToBoard(cross);
 
 function StairRt() {
 
