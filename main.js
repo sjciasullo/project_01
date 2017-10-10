@@ -26,6 +26,7 @@ function TileTracker (row, column) {
   this.column = column;
 }
 
+// FIXME may prototype this constructor for all blockTypes
 // SquareBlock constructor, will modify gameState.board for init and moves
 function SquareBlock () {
   this.className = 'square';
@@ -40,8 +41,15 @@ function SquareBlock () {
   }
 
   this.moveDown = function() {
-    //change top two tiles background color to white
-    //
+    for(let i = 0; i < 2; i++) {
+      //change top two blocks to unplayed class and increment tracker
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+      this.tiles[i].row += 1;
+    }
+    for(let i = 2; i < 4; i++) {
+      this.tiles[i].row += 1;
+      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+    }
   }
 
   this.moveRight = function() {
@@ -153,3 +161,12 @@ function gameCreate() {
 
 
 document.addEventListener('DOMContentLoaded', console.log('main.js is running'));
+
+/* testing
+gameCreate();
+let square = new SquareBlock();
+gameState.addBlockToBoard(square);
+square.moveDown();
+*/
+
+
