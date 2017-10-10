@@ -56,10 +56,12 @@ a {
 }
 
 .square {
-  background-color: red;
+  background-color: yellow;
 }
 
-.
+.cross {
+  background-color: purple;
+}
 
 /*FIXME add classes for new block types
 */
