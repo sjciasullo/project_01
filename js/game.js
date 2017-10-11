@@ -25,6 +25,12 @@
  *
  * change level timer functionality  -> if player finishes level 15 maybe
  * give a you win option
+ *
+ * add javascript media query to size of board so that it can switch to
+ * a certain width (original 275px w tiles ~25px) and change to
+ * two column layout
+ *
+ * add media query for one column design
  */
 // ------------------------- objects -------------------------
 
@@ -651,10 +657,10 @@ function gameCreate() {
 
 document.addEventListener('DOMContentLoaded', () => {
   //
-  gameCreate();
+  //gameCreate();
 
   //prompt an enter name and start level
-  gameState.runGame();
+  //gameState.runGame();
 });
 
 
