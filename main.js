@@ -320,9 +320,9 @@ function LBlock() {
   this.className = 'lBlock';
   //set tiles to up position with first tile as origin (center)
   this.tiles = [
+    (new Coordinate(1,5)),
     (new Coordinate(1,4)),
     (new Coordinate(1,3)),
-    (new Coordinate(0,4)),
     (new Coordinate(0,5))
   ];
   this.orientation = 'left';
@@ -330,8 +330,8 @@ function LBlock() {
   //rotation coordinates to be added to origin at tiles[0]
   this.left = [new Coordinate(-1,0), new Coordinate(0,-1), new Coordinate(0,-2)];
   this.up = [new Coordinate(0,1), new Coordinate(-1,0), new Coordinate(-2,0)];
-  this.right = [new Coordinate(0,1), new Coordinate(1,0), new Coordinate(1,-1)];
-  this.down = [new Coordinate(1,0), new Coordinate(0,1), new Coordinate(0,2)];
+  this.right = [new Coordinate(1,0), new Coordinate(0,1), new Coordinate(0,2)];
+  this.down = [new Coordinate(0,-1), new Coordinate(1,0), new Coordinate(2,0)];
 }
 
 LBlock.prototype = Object.create(Cross.prototype);
@@ -436,7 +436,7 @@ const gameState = {
           console.log('Random number error in createBlocks.')
       }
       // FIXME temporary makeSquare
-      let block = new StepLt();
+      let block = new LBlock();
       this.blockArray.push(block);
     }
   },
