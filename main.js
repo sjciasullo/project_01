@@ -211,7 +211,7 @@ Cross.prototype.moveLeft = function() {
 Cross.prototype.rotate = function(direction) {
   let testCoords = [];
   let testOrientation = '';
-  const origin = this.tiles[0];
+  testCoords.push(this.tiles[0]); //sets origin for testCoords array
   switch (this.orientation) {
     case 'up':
       // direction == clockwise then 'right' else 'left'
@@ -235,22 +235,37 @@ Cross.prototype.rotate = function(direction) {
 
   //apply object matching the testOrientation string to origin from this.tiles[0]
   // ... pushing result into testCoords
+  for(let i = 0; i < this[`${testOrientation}`].length; i++) {
+    let testRow = testCoords[0].row + this[`${testOrientation}`][i].row;
+    let testCol = testCoords[0].column + this[`${testOrientation}`][i].column;
+    testCoords.push(new Coordinate(testRow, testCol));
+  }
 
   //then check testCoords to see if they are valid positions
   let valid = true;
-  //if invalid position valid to false;
+  for(coord of testCoords) {
+    if(gameState.boardArray[coord.row][coord.column].occupied) {
+      valid = false;
+    }
+  }
 
   if(valid) {
     // ... if valid still true, change current positions to unplayed class
+    for(coord of this.tiles) {
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
+    }
+
     // ... then change this.tiles to testCoords and change current positions to this.classname
+    this.tiles = testCoords;
+    for(coord of this.tiles) {
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace('unplayed', `${this.className}`);
+    }
+
     // ... finally change the orientation to testOrientation
     this.orientation = testOrientation; //symbolic representation
-    this.tiles = testCoords;
+  } else {
+    console.log(`${this.className} could not rotate ${direction}`);
   }
-}
-
-Cross.prototype.rotateLeft = function() {
-
 }
 
 // gameCreate();
@@ -474,9 +489,11 @@ const gameState = {
           break;
         case 'm':
         //rotate right
+          currentBlock.rotate('right');
           break;
         case 'n':
         //rotate left
+          currentBlock.rotate('left');
           break;
         case ' ':
         //store block in queue
