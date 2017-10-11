@@ -439,40 +439,46 @@ const gameState = {
     //create blocks. call with 4 on level create
     for(let i = 0; i < numBlocks; i++) {
       //switch based on random number between 0 and 6
+      let block;
       switch (Math.floor(Math.random() * 7)) {
         case 0:
           //create Square
           console.log('make square');
+          block = new Square();
           break;
         case 1:
           //create Cross
           console.log('make cross');
+          block = new Cross();
           break;
         case 2:
           //create StepRight
           console.log('make StepRt');
+          block = new StepRt();
           break;
         case 3:
           //create StepLeft
           console.log('make StepLt');
+          block = new StepLt();
           break;
         case 4:
           //create LBlock
           console.log('make LBlock');
+          block = new LBlock();
           break;
         case 5:
           //create JBlock
           console.log('make JBlock');
+          block = new JBlock();
           break;
         case 6:
           //create Line
           console.log('make Line');
+          block = new Line();
           break;
         default:
           console.log('Random number error in createBlocks.')
       }
-      // FIXME temporary makeSquare
-      let block = new Line();
       this.blockArray.push(block);
     }
   },
