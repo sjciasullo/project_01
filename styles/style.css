@@ -71,6 +71,9 @@ a {
   background-color: red;
 }
 
+.lBlock {
+  background-color: orange;
+}
 
 
 /*FIXME add classes for new block types
