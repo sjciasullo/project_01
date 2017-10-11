@@ -273,8 +273,25 @@ Cross.prototype.rotate = function(direction) {
 // gameState.addBlockToBoard(cross);
 
 function StepRt() {
+  this.className = 'stepRt';
+  //set tiles to up position with first tile as origin (center)
+  this.tiles = [
+    (new Coordinate(1,4)),
+    (new Coordinate(1,3)),
+    (new Coordinate(0,4)),
+    (new Coordinate(0,5))
+  ];
+  this.orientation = 'right';
 
+  //rotation coordinates to be added to origin at tiles[0]
+  this.right = [new Coordinate(0,-1), new Coordinate(-1,0), new Coordinate(-1,1)];
+  this.down = [new Coordinate(-1,0), new Coordinate(0,1), new Coordinate(1,1)];
+  this.left = [new Coordinate(0,1), new Coordinate(1,0), new Coordinate(1,-1)];
+  this.up = [new Coordinate(1,0), new Coordinate(0,-1), new Coordinate(-1,-1)];
 }
+
+StepRt.prototype = Object.create(Cross.prototype);
+StepRt.prototype.constructor = StepRt;
 
 function StepLt() {
 }
@@ -381,7 +398,7 @@ const gameState = {
           console.log('Random number error in createBlocks.')
       }
       // FIXME temporary makeSquare
-      let block = new Square();
+      let block = new StepRt();
       this.blockArray.push(block);
     }
   },
