@@ -7,13 +7,9 @@
   *    row: position in board
   *    column: position in board
 */
-function Tile ($DOM, row, column) {
+function Tile ($DOM) {
   this.occupied = false;
   this.$DOMobj = $DOM;
-
-  // FIXME may need to delete row and column if unused
-  this.row = row;
-  this.column = column;
 }
 
 // Coordinate saves the position of tiles that are used for gameBlocks
@@ -391,7 +387,7 @@ const gameState = {
     for(let i = 0; i < numRows; i++) {
       let row = [];
       for(let j = 0; j < 10; j++) {
-        const tile = new Tile(document.createElement('div'), i, j);
+        const tile = new Tile(document.createElement('div'));
         tile.$DOMobj.className = 'tile unplayed';
         row.push(tile);
         // FIXME if we are not adding children here then how do we do so later?
@@ -531,7 +527,7 @@ const gameState = {
         this.boardArray.unshift([]);
         let $before = document.getElementsByClassName('tile')[0];
         for(let j = 0; j < 10; j++) {
-          const tile = new Tile(document.createElement('div'), i, j);
+          const tile = new Tile(document.createElement('div'));
           tile.$DOMobj.className = 'tile unplayed';
           this.boardArray[0].push(tile)
         }
