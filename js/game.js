@@ -396,7 +396,7 @@ const gameState = {
   */
   boardArray: [], //array of tiles that make up game board
   blockArray: [], //array of blocks to be added to gameBoard
-  currentLevel: 1, //increases when linesCleared % 10 == 0
+  currentLevel: parseInt(localStorage.getItem('level')), //increases when linesCleared % 10 == 0
   linesCleared: 0, //increases if told to by checkClear
   inProgress: true,
 
