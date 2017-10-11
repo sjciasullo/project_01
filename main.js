@@ -130,6 +130,9 @@ function Cross() {
   this.tiles.push(new Coordinate(1,5));
   this.tiles.push(new Coordinate(1,6));
   this.tiles.push(new Coordinate(0,5));
+
+  //rotation coordinates to be added to origin at tiles[0]
+  this.up =
 }
 
 Cross.prototype.checkDown = function() {
@@ -202,9 +205,9 @@ Cross.prototype.moveLeft = function() {
 }
 
 Cross.prototype.rotate = function(direction) {
-  //in switch, apply correct
   let testCoords = [];
   let testOrientation = '';
+  const origin = this.tiles[0];
   switch (this.orientation) {
     case 'up':
       // direction == clockwise then 'right' else 'left'
@@ -226,7 +229,7 @@ Cross.prototype.rotate = function(direction) {
       console.log(`Error rotating ${this.className} ${direction}`);
   }
 
-  //apply object matching the testOrientation string to this.tiles
+  //apply object matching the testOrientation string to origin from this.tiles[0]
   // ... pushing result into testCoords
 
   //then check testCoords to see if they are valid positions
