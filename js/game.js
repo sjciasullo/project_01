@@ -388,6 +388,9 @@ function Line() {
 Line.prototype = Object.create(Cross.prototype);
 Line.prototype.constructor = Line;
 
+// --------------------------- GAMESTATE ------------------------------
+
+
 const gameState = {
  // ------------------------- properties -------------------------
 
