@@ -294,7 +294,27 @@ StepRt.prototype = Object.create(Cross.prototype);
 StepRt.prototype.constructor = StepRt;
 
 function StepLt() {
+  this.className = 'stepLt';
+  //set tiles to up position with first tile as origin (center)
+  this.tiles = [
+    (new Coordinate(1,4)),
+    (new Coordinate(0,4)),
+    (new Coordinate(0,3)),
+    (new Coordinate(1,5))
+  ];
+  this.orientation = 'left';
+
+  //rotation coordinates to be added to origin at tiles[0]
+  this.left = [new Coordinate(0,1), new Coordinate(-1,0), new Coordinate(-1,-1)];
+  this.up = [new Coordinate(1,0), new Coordinate(0,1), new Coordinate(-1,1)];
+  this.right = [new Coordinate(0,-1), new Coordinate(1,0), new Coordinate(1,1)];
+  this.down = [new Coordinate(-1,0), new Coordinate(0,-1), new Coordinate(1,-1)];
 }
+
+// FIXME may need to change up down left right of steps to only have up down
+
+StepLt.prototype = Object.create(Cross.prototype);
+StepLt.prototype.constructor = StepLt;
 
 function LBlock() {
 }
@@ -398,7 +418,7 @@ const gameState = {
           console.log('Random number error in createBlocks.')
       }
       // FIXME temporary makeSquare
-      let block = new StepRt();
+      let block = new StepLt();
       this.blockArray.push(block);
     }
   },
