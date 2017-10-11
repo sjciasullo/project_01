@@ -79,6 +79,10 @@ a {
   background-color: navy;
 }
 
+.line {
+  background-color: skyblue;
+}
+
 
 /*FIXME add classes for new block types
 */
