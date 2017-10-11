@@ -1,20 +1,45 @@
 console.log('main.js is running');
 
+let currentLevel = localStorage.getItem('level');
+if(currentLevel == null) {
+  currentLevel = 1;
+  localStorage.setItem('level', `${currentLevel}`)
+}
+
+const $level = document.getElementById('levelNum');
+$level.innerText = currentLevel;
+
+// On Mouseover of buttons, change color of level to red so user knows
+// level will change upon button click
+const buttons = document.querySelectorAll('button');
+const $decLevel = buttons[0];
+const $incLevel = buttons[1];
 
 
-let buttons = document.querySelectorAll('button');
-buttons[0].addEventListener('mouseover', () => {
+$decLevel.addEventListener('mouseover', () => {
   document.getElementById('level').style.color = 'red';
  });
-buttons[0].addEventListener('mouseout', () => {
+$decLevel.addEventListener('mouseout', () => {
   document.getElementById('level').style.color = 'white';
  });
+$decLevel.addEventListener('click', () => {
+  if(currentLevel > 1) {
+    currentLevel--;
+    localStorage.setItem('level', `${currentLevel}`);
+    $level.innerText = currentLevel;
+  };
+ });
 
-
-
-buttons[1].addEventListener('mouseover', () => {
+$incLevel.addEventListener('mouseover', () => {
   document.getElementById('level').style.color = 'red';
  });
-buttons[1].addEventListener('mouseout', () => {
+$incLevel.addEventListener('mouseout', () => {
   document.getElementById('level').style.color = 'white';
+ });
+$incLevel.addEventListener('click', () => {
+  if(currentLevel < 15) {
+    currentLevel++;
+    localStorage.setItem('level', `${currentLevel}`);
+    $level.innerText = currentLevel;
+  };
  });
