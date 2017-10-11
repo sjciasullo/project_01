@@ -201,15 +201,59 @@ Cross.prototype.moveLeft = function() {
   }
 }
 
+Cross.prototype.rotate = function(direction) {
+  //in switch, apply correct
+  let testCoords = [];
+  let testOrientation = '';
+  switch (this.orientation) {
+    case 'up':
+      // direction == clockwise then 'right' else 'left'
+      (direction == 'right') ? testOrientation = 'right' : testOrientation = 'left';
+      break;
+    case 'right':
+      // direction == clockwise then 'down' else 'up'
+      (direction == 'right') ? testOrientation = 'down' : testOrientation = 'up';
+      break;
+    case 'down':
+      // direction == clockwise then 'left' else 'right'
+      (direction == 'right') ? testOrientation = 'left' : testOrientation = 'right';
+      break;
+    case 'left':
+      // direction == clockwise then 'up' else 'down'
+      (direction == 'right') ? testOrientation = 'up' : testOrientation = 'down';
+      break;
+    default:
+      console.log(`Error rotating ${this.className} ${direction}`);
+  }
+
+  //apply object matching the testOrientation string to this.tiles
+  // ... pushing result into testCoords
+
+  //then check testCoords to see if they are valid positions
+  let valid = true;
+  //if invalid position valid to false;
+
+  if(valid) {
+  // ... if valid still true, change current positions to unplayed class
+  // ... then change this.tiles to testCoords and change current positions to this.classname
+  // ... finally change the orientation to testOrientation
+  this.orientation = testOrientation;
+  }
+}
+
+Cross.prototype.rotateLeft = function() {
+
+}
+
 // gameCreate();
 // let cross = new Cross();
 // gameState.addBlockToBoard(cross);
 
-function StairRt() {
+function StepRt() {
 
 }
 
-function StairLt() {
+function StepLt() {
 }
 
 function LBlock() {
@@ -291,12 +335,12 @@ const gameState = {
           console.log('make cross');
           break;
         case 2:
-          //create StairRight
-          console.log('make StairRt');
+          //create StepRight
+          console.log('make StepRt');
           break;
         case 3:
-          //create StairLeft
-          console.log('make StairLt');
+          //create StepLeft
+          console.log('make StepLt');
           break;
         case 4:
           //create LBlock
