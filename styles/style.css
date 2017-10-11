@@ -10,6 +10,8 @@ body{
 header{
   text-align: center;
   margin: 30px auto;
+  width: 70%;
+  background-color: white;
 }
 
 h1{
