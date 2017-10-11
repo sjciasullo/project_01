@@ -28,7 +28,7 @@ function Coordinate(row, column) {
 }
 
 // Square constructor, will modify gameState.board for init and moves
-function Square () {
+function Square() {
   this.className = 'square';
   //tiles could be 2d, but 1d for generalization of adding block to board
   this.tiles = [];
@@ -123,16 +123,20 @@ Square.prototype.moveLeft = function() {
 
 function Cross() {
   this.className = 'cross';
-  this.tiles = [];
+  //set tiles to up position with first tile as origin (center)
+  this.tiles = [
+    (new Coordinate(1,5)),
+    (new Coordinate(1,4)),
+    (new Coordinate(0,5)),
+    (new Coordinate(1,6))
+  ];
   this.orientation = 'up';
-  //set tiles to up position
-  this.tiles.push(new Coordinate(1,4));
-  this.tiles.push(new Coordinate(1,5));
-  this.tiles.push(new Coordinate(1,6));
-  this.tiles.push(new Coordinate(0,5));
 
   //rotation coordinates to be added to origin at tiles[0]
-  this.up =
+  this.up = [new Coordinate(0,-1), new Coordinate(-1,0), new Coordinate(0,1)];
+  this.right = [new Coordinate(-1,0), new Coordinate(0,1), new Coordinate(1,0)];
+  this.down = [new Coordinate(0,-1), new Coordinate(1,0), new Coordinate(0,1)];
+  this.left = [new Coordinate(-1,0), new Coordinate(0,-1), new Coordinate(1,0)];
 }
 
 Cross.prototype.checkDown = function() {
@@ -237,10 +241,11 @@ Cross.prototype.rotate = function(direction) {
   //if invalid position valid to false;
 
   if(valid) {
-  // ... if valid still true, change current positions to unplayed class
-  // ... then change this.tiles to testCoords and change current positions to this.classname
-  // ... finally change the orientation to testOrientation
-  this.orientation = testOrientation;
+    // ... if valid still true, change current positions to unplayed class
+    // ... then change this.tiles to testCoords and change current positions to this.classname
+    // ... finally change the orientation to testOrientation
+    this.orientation = testOrientation; //symbolic representation
+    this.tiles = testCoords;
   }
 }
 
