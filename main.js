@@ -360,8 +360,25 @@ JBlock.prototype.constructor = JBlock;
 
 
 function Line() {
+  this.className = 'line';
+  //set tiles to up position with first tile as origin (center)
+  this.tiles = [
+    (new Coordinate(0,3)),
+    (new Coordinate(0,4)),
+    (new Coordinate(0,5)),
+    (new Coordinate(0,6))
+  ];
+  this.orientation = 'right';
 
+  //rotation coordinates to be added to origin at tiles[0]
+  this.right = [new Coordinate(0,1), new Coordinate(0,2), new Coordinate(0,3)];
+  this.down = [new Coordinate(1,0), new Coordinate(2,0), new Coordinate(3,0)];
+  this.left = [new Coordinate(0,-1), new Coordinate(0,-2), new Coordinate(0,-3)];
+  this.up = [new Coordinate(-1,0), new Coordinate(-2,0), new Coordinate(-3,0)];
 }
+
+Line.prototype = Object.create(Cross.prototype);
+Line.prototype.constructor = Line;
 
 const gameState = {
  // ------------------------- properties -------------------------
@@ -455,7 +472,7 @@ const gameState = {
           console.log('Random number error in createBlocks.')
       }
       // FIXME temporary makeSquare
-      let block = new JBlock();
+      let block = new Line();
       this.blockArray.push(block);
     }
   },
