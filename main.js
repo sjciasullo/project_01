@@ -1,12 +1,35 @@
  console.log('main.js is running');
+
+/** To-do
+ *
+ * fix square constructor -- put cross above it and inherit cross
+ *
+ * fix rotate to check for boundary of board so error doesn't throw
+ *
+ * take out console.logs
+ *
+ * change step orientations to account for oddity in rotating from bottom
+ *
+ * add scoring for line clears
+ *
+ * update dom w score
+ *
+ * prompt for name and start level
+ *
+ * when the game ends prompt a game over with your score, tell user they set a
+ * new high score if they did
+ *
+ * add shadow locator
+ *
+ * add drop button
+ *
+ * add block holder function
+ *
+ * change level timer functionality  -> if player finishes level 15 maybe
+ * give a you win option
+ */
 // ------------------------- objects -------------------------
-/*   tile constructor
-  *    className: 'unplayed' // className for correct color
-  *    occupied: false
-  *    $DOMlocation: null;
-  *    row: position in board
-  *    column: position in board
-*/
+
 function Tile ($DOM) {
   this.occupied = false;
   this.$DOMobj = $DOM;
@@ -390,8 +413,6 @@ const gameState = {
         const tile = new Tile(document.createElement('div'));
         tile.$DOMobj.className = 'tile unplayed';
         row.push(tile);
-        // FIXME if we are not adding children here then how do we do so later?
-        //document.getElementById('board').appendChild(tile.$DOMobj);
       }
       finalArr.push(row);
     }
@@ -474,7 +495,6 @@ const gameState = {
  // set block into position, for end of move
  // returns true if valid entry, false if cannot enter
   setBlockInBoard: function(block) {
-    // FIXME may need to change this if we change object tiles to 2d array
     for(let i = 0; i < block.tiles.length; i++) {
       let boardRow = block.tiles[i].row;
       let boardCol = block.tiles[i].column;
@@ -612,23 +632,13 @@ const gameState = {
           this.addBlockToBoard(currentBlock);
         }
       }
-    }, 1500 / this.currentLevel);
+    }, 1200 / this.currentLevel);
   },
 }
 
 // ------------------------- functions -------------------------
 
-
-
 // game logic
-/*
-gameCreate() triggered by start button on index.html
-  levelCreate(currentLevel)
-  --currentLevel = 1;
-  --create blocks for level
-      while(!endMove){ blockMove }
-      if no loss, then go back to level create with increased level count
-*/
 
 /**
  * This function creates the board and saves it in the gameState object.
@@ -638,15 +648,12 @@ function gameCreate() {
   gameState.createBoard();
 
   //create level while block.. create levelBlocksArray and pop a block into current block
-
-  //call level create
 }
 
-document.addEventListener('DOMContentLoaded', console.log('call gameCreate() here using start button'));
-
-/* testing
-gameCreate();
-gameState.runGame();
-*/
+document.addEventListener('DOMContentLoaded', () => {
+  //prompt an enter name and start level
+  gameCreate();
+  gameState.runGame();
+}));
 
 
