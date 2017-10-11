@@ -16,11 +16,6 @@ function Tile ($DOM, row, column) {
   this.column = column;
 }
 
-/*   gameBlocks constructor
-  *    an array holding tiles
-*/
-
-
 // Coordinate saves the position of tiles that are used for gameBlocks
 function Coordinate(row, column) {
   this.row = row;
@@ -43,7 +38,7 @@ function Square() {
 }
 
 // Square methods
-//returns false if next block cannot be moved down
+// can be generalized to use cross prototype
 Square.prototype.checkDown = function() {
   //check to see if reached bottom row or next tile is filled
   for(let i = 2; i < 4; i++) {
@@ -268,10 +263,6 @@ Cross.prototype.rotate = function(direction) {
   }
 }
 
-// gameCreate();
-// let cross = new Cross();
-// gameState.addBlockToBoard(cross);
-
 function StepRt() {
   this.className = 'stepRt';
   //set tiles to up position with first tile as origin (center)
@@ -391,15 +382,6 @@ const gameState = {
   currentLevel: 1, //increases when linesCleared % 10 == 0
   linesCleared: 0, //increases if told to by checkClear
   inProgress: true,
-
- /**
- * blockArray: [],
- *     an array made of all the gameBlocks for that level
- *
- * // may not need currentBlock -> may contain currentBlock in blockMove
- * currentBlock = null;
- *    holds the current block that's being moved in the board
- */
 
  // ------------------------- methods -------------------------
 
@@ -635,50 +617,7 @@ const gameState = {
         }
       }
     }, 1500 / this.currentLevel);
-
   },
-    // while(this.inProgress) {
-    //   //send first block to board
-    //   let currentBlock = this.blockArray.shift();
-    //   this.addBlockToBoard(currentBlock);
-
-    //   //add new block to blockArray
-    //   this.createBlocks(1);
-    //   // FIXME update upcoming block viewer
-
-    //   //apply moveDown every amount of milliseconds
-    //   window.setInterval(() => {
-    //     currentBlock.moveDown();
-    //   }, 1 / this.currentLevel);
-
-    //   //failsafe return for now
-    //   return true;
-    //   //when block can't moveDown anymore, commit it to board and
-    // }
-
-/**
- * level create function
- *    make all of the gameBlocks using a random selector and array
- *
- * block move function
- *   use window.setInterval
- *   may need different one for each type of block
- *   0. check if bottom blocks can move
- *        -- if reaches bottom of board or next blocks are occupied
- *        -- then execute endMove function
- *   1. make blocks white and change to unoccupied in array
- *   2. increment row for each of the blocks? or just change the ones that need to be changed
- *   3. set new spots to be the correct color
- *
- * endMove function
- *    check if loss condition (block cannot fit on board)
- *    check if rows filled
- *        if rows are filled then clear in boardArray, and move down all other rows
- *        update DOM
- *    may return a number of rowscleared
- *
- *
- */
 }
 
 // ------------------------- functions -------------------------
