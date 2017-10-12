@@ -1,7 +1,5 @@
 /** To-do
  *
- * change step orientations to account for oddity in rotating from bottom
- *
  * prompt for name and start level
  *
  * add shadow locator
