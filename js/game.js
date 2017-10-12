@@ -1,30 +1,14 @@
 /** To-do
  *
- * fix square constructor -- put cross above it and inherit cross
- *
  * fix rotate to check for boundary of board so error doesn't throw
- *
- * take out console.logs
  *
  * change step orientations to account for oddity in rotating from bottom
  *
- * add scoring for line clears
- *
- * update dom w score
- *
  * prompt for name and start level
- *
- * when the game ends prompt a game over with your score, tell user they set a
- * new high score if they did
  *
  * add shadow locator
  *
  * add drop button
- *
- * add block holder function
- *
- * change level timer functionality  -> if player finishes level 15 maybe
- * give a you win option
  *
  * add javascript media query to size of board so that it can switch to
  * change to two column layout
@@ -201,7 +185,7 @@ function Square() {
     (new Coordinate(0,5))
   ];
   this.orientation = 'up';
-  this.up = [new Coordinate(0,1), new Coordinate(-1,0), new Coordinate(-1,1)];]
+  this.up = [new Coordinate(0,1), new Coordinate(-1,0), new Coordinate(-1,1)];
   this.right = this.up;
   this.left = this.up;
   this.down = this.up;
@@ -405,37 +389,37 @@ const gameState = {
       switch (Math.floor(Math.random() * 7)) {
         case 0:
           //create Square
-          console.log('make square');
+          // console.log('make square');
           block = new Square();
           break;
         case 1:
           //create Cross
-          console.log('make cross');
+          // console.log('make cross');
           block = new Cross();
           break;
         case 2:
           //create StepRight
-          console.log('make StepRt');
+          // console.log('make StepRt');
           block = new StepRt();
           break;
         case 3:
           //create StepLeft
-          console.log('make StepLt');
+          // console.log('make StepLt');
           block = new StepLt();
           break;
         case 4:
           //create LBlock
-          console.log('make LBlock');
+          // console.log('make LBlock');
           block = new LBlock();
           break;
         case 5:
           //create JBlock
-          console.log('make JBlock');
+          // console.log('make JBlock');
           block = new JBlock();
           break;
         case 6:
           //create Line
-          console.log('make Line');
+          // console.log('make Line');
           block = new Line();
           break;
         default:
@@ -513,7 +497,6 @@ const gameState = {
       }
       row++;
     }
-    console.log(`found ${numClears} full rows starting at row ${firstClear}`);
     // if there were any cleared rows, must update this.tileArray and DOM
     const $board = document.getElementById('board');
     if(numClears > 0) {
@@ -638,10 +621,8 @@ const gameState = {
 
         //set current block in board
         endGame = !(this.setBlockInBoard(currentBlock));
-        // console.log(`end game is ${endGame}`);
-
         if(endGame) {
-          // console.log('ur game is over, fool');
+          console.log('ur game is over, fool');
           window.clearInterval(intervalN);
 
           //delete all the tiles
@@ -654,15 +635,10 @@ const gameState = {
             document.querySelector('p').innerText = `You set a new high score of ${this.highScore}! Congratulations!`
           }
           document.getElementById('gameOver').style.visibility = 'visible';
-
-
         } else {
-          console.log('create new block.');
-          //clear upcoming blocks
-          // for(let i = 0; i < this.blockArray.length; i++) {
-          //   //+1 because 0 is the hold sideBoard
-          //   this.removeBlockFromSmall(this.blockArray[i], i+1);
-          // }
+          // console.log('create new block.');
+
+          // FIXME this block is used twice and could be abstracted out
           this.removeBlockFromSmall(this.blockArray[0], 3);
           this.removeBlockFromSmall(this.blockArray[1], 2);
           this.removeBlockFromSmall(this.blockArray[2], 1);
