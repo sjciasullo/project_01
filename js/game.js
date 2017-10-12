@@ -646,7 +646,7 @@ const gameState = {
           if(this.newHighScore) {
             document.querySelector('p').innerText = `You set a new high score of ${this.highScore}! Congratulations!`
           }
-          document.getElementById('gameOver').style.visibility = 'visible';
+          document.getElementById('maskOn').style.visibility = 'visible';
         } else {
           // console.log('create new block.');
 
