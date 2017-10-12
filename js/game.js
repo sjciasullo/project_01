@@ -1,7 +1,5 @@
 /** To-do
  *
- * fix rotate to check for boundary of board so error doesn't throw
- *
  * change step orientations to account for oddity in rotating from bottom
  *
  * prompt for name and start level
@@ -591,7 +589,6 @@ const gameState = {
 
     this.createBlocks(4);
 
-
     let currentBlock = this.blockArray.shift();
     this.addBlockToBoard(currentBlock);
 
@@ -611,11 +608,11 @@ const gameState = {
         case 'ArrowDown':
           currentBlock.moveDown();
           break;
-        case 'm':
+        case 'f':
         //rotate right
           currentBlock.rotate('right');
           break;
-        case 'n':
+        case 'd':
         //rotate left
           currentBlock.rotate('left');
           break;
