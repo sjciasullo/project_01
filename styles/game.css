@@ -33,9 +33,17 @@
   text-align: center;
   font-weight: bold;
   border: 1px solid black;
-  margin: 20% auto;
+  margin: 10% auto;
   width: 60%;
   background-color: #BBB;
+}
+
+#scoreboard {
+  margin: 10% auto;
+}
+
+#controls {
+  margin: 24% auto;
 }
 
 .smallHead {

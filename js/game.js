@@ -677,7 +677,8 @@ function gameCreate() {
 document.addEventListener('DOMContentLoaded', () => {
   //add event listener to start button which erases start button, then calls gameCreate
 
-  //gameCreate();
+  gameCreate();
+  gameState.runGame();
 
 
 });
