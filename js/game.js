@@ -405,9 +405,14 @@ const gameState = {
   boardArray: [], //array of tiles that make up game board
   blockArray: [], //array of blocks to be added to gameBoard
   smallBoards: [],
-  currentLevel: parseInt(localStorage.getItem('level')), //increases when linesCleared % 10 == 0
+  currentLevel: parseInt(localStorage.getItem('level')), //+ every 10 lnsClrd
+  $currentLevel: document.getElementById('currentLevel'),
+  highScore: 0,
+  $highScore: document.getElementById('highScore'),
+  score: 0,
+  $score: document.getElementById('score'),
   linesCleared: 0, //increases if told to by checkClear
-  inProgress: true,
+  $linesCleared: document.getElementById('linesCleared'),
 
  // ------------------------- methods -------------------------
 
@@ -693,6 +698,7 @@ const gameState = {
           this.linesCleared += this.clearRows();
           if(this.linesCleared % 10 == 0 && this.linesCleared > 0) {
             this.currentLevel += 1;
+            $currentLevel.innerHTML = this.currentLevel;
             console.log(`current level has increased to ${this.currentLevel}`)
           }
 
@@ -717,6 +723,22 @@ function gameCreate() {
 document.addEventListener('DOMContentLoaded', () => {
   //add event listener to start button which erases start button, then calls gameCreate
 
+  //set already known scoreboard into DOM
+  gameState.$currentLevel.innerText = `${gameState.currentLevel}`;
+  gameState.$score.innerText = `${gameState.score}`;
+  gameState.$linesCleared.innerText = `${gameState.linesCleared}`;
+
+  //check for highScore
+  gameState.highScore = localStorage.getItem('highScore');
+  if(gameState.highScore == null) {
+    gameState.highScore = 0;
+    localStorage.setItem('level', `${gameState.highScore}`)
+  }
+
+  //set highScore into gameState and add to DOM
+  gameState.$highScore.innerText = `${gameState.highScore}`;
+
+  //
   //gameCreate();
   //gameState.runGame();
 
