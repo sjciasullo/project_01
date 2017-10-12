@@ -12,8 +12,8 @@
   border: 3px solid black;
   border-radius: 3%;
   margin: 10px auto;
-/*  width: 275px;*/
-  width: 33%;
+  width: 275px;
+  /*width: 33%;*/
   height: 545px;
   padding-left: 5px;
   background-color: #333;
@@ -24,6 +24,41 @@
   float:left;
   width: 33%;
   height: 545px;
+}
+
+.smallBox{
+  text-size: 20px;
+  font-family: arial;
+  letter-spacing: 3px;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid black;
+  margin: 20% auto;
+  width: 60%;
+  background-color: #BBB;
+}
+
+.smallHead {
+  text-decoration: underline;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px;
+  letter-spacing: 2px;
+}
+
+.smallBox div{
+  letter-spacing: 1px;
+  font-variant-caps: small-caps;
+  font-weight: bold;
+  padding: 5px;
+}
+
+span {
+  color: #B6FF00;
+}
+
+#highScore {
+  color: red;
 }
 
 .tile {

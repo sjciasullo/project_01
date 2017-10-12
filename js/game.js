@@ -27,8 +27,7 @@
  * give a you win option
  *
  * add javascript media query to size of board so that it can switch to
- * a certain width (original 275px w tiles ~25px) and change to
- * two column layout
+ * change to two column layout
  *
  * add media query for one column design
  */

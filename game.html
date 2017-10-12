@@ -16,13 +16,26 @@
     </header><!-- /header -->
 
     <div id='left'>
+      <div class='smallBox' id='hold'>
+        <h3 class='smallHead'>Hold</h3>
+        <div id='holdBoard'>
+        </div>
+      </div>
+      <div class='smallBox' id='scoreboard'>
+        <h3 class='smallHead'>Scoreboard</h3>
+        <div id='scoreDiv'>Score: <span id='score'></span></div>
+        <div id='linesDiv'>Lines: <span id='linesCleared'></span></div>
+        <div id='levelDiv'>Level: <span id='currentLevel'></span></div>
+        <div id='highScoreDiv'>High Score: <span id='highScore'></span></div>
+      </div>
     </div>
 
     <div id='board'>
     </div>
 
     <div id='right'>
-
+      <div class='smallBox' id='upcoming'></div>
+      <div class='smallBox' id='controls'></div>
     </div>
   </div>
   <script src="./js/game.js"></script>
