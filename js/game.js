@@ -44,100 +44,6 @@ function Coordinate(row, column) {
   this.column = column;
 }
 
-// Square constructor, will modify gameState.board for init and moves
-function Square() {
-  this.className = 'square';
-  //tiles could be 2d, but 1d for generalization of adding block to board
-  this.tiles = [];
-  // set tiles to beginning of board
-  for(let i = 0; i < 2; i++) {
-    for(let j = 0; j < 2; j++) {
-      //add 4 to j to start in middle of board
-      let tile = new Coordinate(i, j + 4);
-      this.tiles.push(tile);
-    }
-  }
-}
-
-// Square methods
-// can be generalized to use cross prototype
-Square.prototype.checkDown = function() {
-  //check to see if reached bottom row or next tile is filled
-  for(let i = 2; i < 4; i++) {
-    if(this.tiles[i].row == 19 ||
-      gameState.boardArray[this.tiles[i].row + 1][this.tiles[i].column].occupied){
-      return false;
-    }
-  }
-  return true;
-}
-
-Square.prototype.moveDown = function() {
-  if(this.checkDown()) {
-    for(let i = 0; i < 2; i++) {
-    //change top two blocks to unplayed class and increment tracker
-    gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
-    this.tiles[i].row += 1;
-    }
-    for(let i = 2; i < 4; i++) {
-      this.tiles[i].row += 1;
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
-    }
-  }
-}
-
-Square.prototype.checkRight = function() {
-  //check to see if reached right border or next tile is filled
-  //(checks top right and bottom right tiles)
-  for(let i = 1; i < 4; i+=2) {
-    if(this.tiles[i].column == 9 ||
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column + 1].occupied){
-      return false;
-    }
-  }
-  return true;
-}
-
-Square.prototype.moveRight = function() {
-  if(this.checkRight()) {
-    for(let i = 0; i < 4; i+=2) {
-    //change left two blocks to unplayed class and increment tracker
-    gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
-    this.tiles[i].column += 1;
-    }
-    for(let i = 1; i < 4; i+=2) {
-      this.tiles[i].column += 1;
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
-    }
-  }
-}
-
-Square.prototype.checkLeft = function() {
-  //check to see if reached left border or next tile is filled
-  //(checks top right and bottom right tiles)
-  for(let i = 0; i < 4; i+=2) {
-    if(this.tiles[i].column == 0 ||
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column - 1].occupied){
-      return false;
-    }
-  }
-  return true;
-}
-
-Square.prototype.moveLeft = function() {
-  if(this.checkLeft()) {
-    for(let i = 1; i < 4; i+=2) {
-    //change right two blocks to unplayed class and increment tracker
-    gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace(`${this.className}`, 'unplayed');
-    this.tiles[i].column -= 1;
-    }
-    for(let i = 0; i < 4; i+=2) {
-      this.tiles[i].column -= 1;
-      gameState.boardArray[this.tiles[i].row][this.tiles[i].column].$DOMobj.classList.replace('unplayed', `${this.className}`);
-    }
-  }
-}
-
 function Cross() {
   this.className = 'cross';
   //set tiles to up position with first tile as origin (center)
@@ -284,6 +190,25 @@ Cross.prototype.rotate = function(direction) {
     console.log(`${this.className} could not rotate ${direction}`);
   }
 }
+
+function Square() {
+  this.className = 'square';
+  //tiles could be 2d, but 1d for generalization of adding block to board
+  this.tiles = [
+    (new Coordinate(1,4)),
+    (new Coordinate(1,5)),
+    (new Coordinate(0,4)),
+    (new Coordinate(0,5))
+  ];
+  this.orientation = 'up';
+  this.up = [new Coordinate(0,1), new Coordinate(-1,0), new Coordinate(-1,1)];]
+  this.right = this.up;
+  this.left = this.up;
+  this.down = this.up;
+}
+
+Square.prototype = Object.create(Cross.prototype);
+Square.prototype.constructor = Square;
 
 function StepRt() {
   this.className = 'stepRt';
