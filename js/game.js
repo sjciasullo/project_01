@@ -404,6 +404,7 @@ const gameState = {
   */
   boardArray: [], //array of tiles that make up game board
   blockArray: [], //array of blocks to be added to gameBoard
+  smallBoards: [],
   currentLevel: parseInt(localStorage.getItem('level')), //increases when linesCleared % 10 == 0
   linesCleared: 0, //increases if told to by checkClear
   inProgress: true,
@@ -444,20 +445,24 @@ const gameState = {
     const smallCols = 4;
     const $hold = document.getElementById('holdBoard');
     //or get const smallBoards array and just loop through it
+    const $smallBoards = document.getElementsByClassName('smallBoard');
 
-    let smallBoard = [];
-    for(let i = 0; i < smallRows; i++) {
-      let row = [];
-      for(let j = 0; j < smallCols; j++) {
-        const tile = new Tile(document.createElement('div'));
-        tile.$DOMobj.className = 'tile unplayed';
-        row.push(tile);
-        //$smallBoards[h].appendChild(tile.$DOMobj);
-        $hold.appendChild(tile.$DOMobj);
+    for(let h = 0; h < 4; h++) {
+      let smallBoard = [];
+      for(let i = 0; i < smallRows; i++) {
+        let row = [];
+        for(let j = 0; j < smallCols; j++) {
+          const tile = new Tile(document.createElement('div'));
+          tile.$DOMobj.className = 'tile unplayed';
+          row.push(tile);
+          $smallBoards[h].appendChild(tile.$DOMobj);
+          // $hold.appendChild(tile.$DOMobj);
+        }
+        smallBoard.push(row);
       }
-      smallBoard.push(row);
+      //save into gameState, mostly for the $DOMobj
+      this.smallBoards.push(smallBoard);
     }
-
   },
 
  // create blockArray with numBlocks size and random assortment of blocks
@@ -677,8 +682,8 @@ function gameCreate() {
 document.addEventListener('DOMContentLoaded', () => {
   //add event listener to start button which erases start button, then calls gameCreate
 
-  gameCreate();
-  gameState.runGame();
+  //gameCreate();
+  //gameState.runGame();
 
 
 });
