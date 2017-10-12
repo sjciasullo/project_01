@@ -535,6 +535,15 @@ const gameState = {
     }
   },
 
+  //makes selected smallBoard clear
+  removeBlockFromSmall: function(block, index) {
+    for(let row = 0; row < 2; row++) {
+      for(let column = 0; column < 4; column++) {
+        this.smallBoards[index][row][column].$DOMobj.classList.replace(`${block.className}`,'unplayed',);
+      }
+    }
+  },
+
  // set block into position, for end of move
  // returns true if valid entry, false if cannot enter
   setBlockInBoard: function(block) {
