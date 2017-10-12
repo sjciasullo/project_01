@@ -789,9 +789,6 @@ document.addEventListener('DOMContentLoaded', () => {
     $start.style.visibility = 'hidden';
     gameCreate();
   })
-
-
-
 });
 
 

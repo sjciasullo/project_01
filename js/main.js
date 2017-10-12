@@ -44,4 +44,10 @@ $incLevel.addEventListener('click', () => {
     localStorage.setItem('level', `${currentLevel}`);
     $level.innerText = currentLevel;
   };
- });
+});
+
+
+//reset button will reset memory
+document.getElementById('reset').addEventListener('click', () => {
+  localStorage.clear();
+})
