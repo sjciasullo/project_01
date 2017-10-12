@@ -674,6 +674,19 @@ const gameState = {
         if(endGame) {
           // console.log('ur game is over, fool');
           window.clearInterval(intervalN);
+
+          //delete all the tiles
+          // let deleteTiles = Array.from(document.getElementsByClassName('tile'));
+          // for(let i = 0; i < deleteTiles.length; i++) {
+          //   let $parent = deleteTiles[i].parentNode;
+          //   $parent.removeChild(deleteTiles[i]);
+          // }
+          if(this.newHighScore) {
+            document.querySelector('p').innerText = `You set a new high score of ${this.highScore}! Congratulations!`
+          }
+          document.getElementById('gameOver').style.visibility = 'visible';
+
+
         } else {
           console.log('create new block.');
           //clear upcoming blocks
@@ -741,7 +754,7 @@ const gameState = {
 function gameCreate() {
   //create 20row x 10column board using Tile constructor
   gameState.createBoard();
-  //gameState.runGame();
+  setTimeout(gameState.runGame(), 1000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -140,3 +140,27 @@ span {
 .line {
   background-color: skyblue;
 }
+
+#gameOver {
+  background-color: #888;
+  color: red;
+  position: absolute;
+  text-align: center;
+  margin: 40px auto;
+  width: 250px;
+  font-size: 25px;
+  border-radius: 2%;
+  text-decoration: underline;
+  text-transform: uppercase;
+  padding: 5px;
+  visibility: hidden;
+}
+
+p {
+  font-family: arial;
+  font-size: 15px;
+  letter-spacing: 2px;
+  padding: 30px 5px 30px 5px;
+  text-decoration: none;
+  color: white;
+}
