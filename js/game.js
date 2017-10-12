@@ -1,5 +1,10 @@
 /** To-do
  *
+ * *** fix bug in timer *** may need to reset interval everytime we try
+ *-- to create a new level. wrap level in function like originally thought?
+ *
+ * add button icons for controls
+ *
  * prompt for name and start level
  *
  * add shadow locator
@@ -703,6 +708,8 @@ const gameState = {
           this.addBlockToBoard(currentBlock);
         }
       }
+      // FIXME THIS DOES NOT ACTUALLY UPDATE THE PACE EVERY TIME... WILL NEED TO CLEAR INTERVAL AND CALL IT AGAIN
+
     }, ms);
   },
 }
