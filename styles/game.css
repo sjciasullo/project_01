@@ -141,6 +141,14 @@ span {
   background-color: skyblue;
 }
 
+#start {
+  position: absolute;
+  margin-left: 80px;
+  padding: 5px 10px 5px 10px;
+  font-size: 20px;
+  visibility: visible;
+}
+
 #gameOver {
   background-color: #888;
   color: red;

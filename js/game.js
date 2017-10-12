@@ -784,9 +784,12 @@ document.addEventListener('DOMContentLoaded', () => {
   //add highscore add to DOM
   gameState.$highScore.innerText = `${gameState.highScore}`;
 
-  //
-  //gameCreate();
-  //gameState.runGame();
+  const $start = document.getElementById('start');
+  $start.addEventListener('click', () => {
+    $start.style.visibility = 'hidden';
+    gameCreate();
+  })
+
 
 
 });
