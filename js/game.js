@@ -691,7 +691,7 @@ const gameState = {
 
           //check for rows cleared
           this.linesCleared += this.clearRows();
-          if(this.linesCleared % 10 == 0) {
+          if(this.linesCleared % 10 == 0 && this.linesCleared > 0) {
             this.currentLevel += 1;
             console.log(`current level has increased to ${this.currentLevel}`)
           }
