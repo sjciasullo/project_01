@@ -414,6 +414,7 @@ const gameState = {
   linesCleared: 0, //increases if told to by checkClear
   $linesCleared: document.getElementById('linesCleared'),
   newHighScore: false,
+  holder: null,
 
  // ------------------------- methods -------------------------
 
@@ -619,6 +620,46 @@ const gameState = {
     return numClears;
   },
 
+  //
+  hold: function(block) {
+    //clear the space that is currently occupied
+    let newBlock = null;
+    for(coord of block.tiles) {
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace(`${block.className}`, 'unplayed');
+    }
+
+    //this is first time putting in holder
+    if(this.holder == null) {
+      //this doesn't clear upcoming and set it
+      // FIXME use an update upcomingblocks function that gets passed current arr
+      this.removeBlockFromSmall(this.blockArray[0], 3);
+      this.removeBlockFromSmall(this.blockArray[1], 2);
+      this.removeBlockFromSmall(this.blockArray[2], 1);
+
+      //add block to blocksArray
+      this.createBlocks(1);
+      //make new blocks on upcoming
+      this.addBlockToSmall(this.blockArray[1], 3);
+      this.addBlockToSmall(this.blockArray[2], 2);
+      this.addBlockToSmall(this.blockArray[3], 1);
+      newBlock = this.blockArray.shift();
+    } else {
+      //clear the hold image representation on DOM
+      this.removeBlockFromSmall(this.holder, 0);
+      newBlock = this.holder;
+    }
+
+    //set block's positions to 0 point
+    block = new block.constructor();
+    this.addBlockToSmall(block, 0);
+    this.holder = block;
+
+    for(coord of newBlock.tiles) {
+      gameState.boardArray[coord.row][coord.column].$DOMobj.classList.replace( 'unplayed', `${newBlock.className}`);
+    }
+    return newBlock;
+  },
+
   runGame: function() {
     //create 4 blocks, 1 to be added and 3 for upcoming blocks
     let endGame = false;
@@ -654,7 +695,10 @@ const gameState = {
           currentBlock.rotate('left');
           break;
         case ' ':
-        //store block in queue
+        // store block in queue
+          currentBlock = this.hold(currentBlock);
+          break;
+        default:
           break;
       }
     });
