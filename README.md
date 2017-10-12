@@ -39,10 +39,10 @@ USER STORIES:
 
 WIREFRAMES
 #
-![Wireframe](./directory/proposal-wireframe.jpg)
---multiple times for other pictures
-
-
+![Wireframe1](./wireframes/wireframe1.JPG)
+![Wireframe2](./wireframes/wireframe2.JPG)
+![Wireframe3](./wireframes/wireframe3.JPG)
+![Wireframe4](./wireframes/wireframe4.JPG)
 #
 
 HOW TO USE INSTRUCTIONS
