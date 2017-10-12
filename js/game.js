@@ -432,7 +432,6 @@ const gameState = {
     const numRows = 20;
     const numColumns = 10;
     this.boardArray = this.createRows(numRows);
-    console.log(this.boardArray);
     const $board = document.getElementById('board');
     for(let i = 0; i < numRows; i++) {
       for(let j = 0; j < numColumns; j++) {
@@ -553,7 +552,7 @@ const gameState = {
       if(this.boardArray[boardRow][boardCol].occupied) {return false;}
       else {this.boardArray[boardRow][boardCol].occupied = true;}
     }
-    console.log('block commited to board');
+    // console.log('block commited to board');
     return true;
   },
 
@@ -620,8 +619,14 @@ const gameState = {
 
     this.createBlocks(4);
 
+
     let currentBlock = this.blockArray.shift();
     this.addBlockToBoard(currentBlock);
+
+    //add remaining blocks to upcoming blocks board
+    for(let i = 0; i < 3; i++) {
+      this.addBlockToSmall(this.blockArray[i], 3-i);
+    }
 
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
@@ -648,31 +653,41 @@ const gameState = {
       }
     });
 
-    // FIXME update upcoming block viewer
-
     //apply moveDown every amount of milliseconds
     let intervalN = window.setInterval(() => {
       if(currentBlock.checkDown()) {
         currentBlock.moveDown();
-        console.log('the blocks are falling!');
       } else {
-        console.log('Block finished');
+        // console.log('Block finished');
 
         //set current block in board
-        console.log('Check for end by setting in board');
         endGame = !(this.setBlockInBoard(currentBlock));
-        console.log(`end game is ${endGame}`);
+        // console.log(`end game is ${endGame}`);
 
         if(endGame) {
-          console.log('ur game is over, fool');
+          // console.log('ur game is over, fool');
           window.clearInterval(intervalN);
-          console.log('moveDown on interval has stopped');
         } else {
           console.log('create new block.');
-          //update current block to front of blocksArray
-          currentBlock = this.blockArray.shift();
+          //clear upcoming blocks
+          // for(let i = 0; i < this.blockArray.length; i++) {
+          //   //+1 because 0 is the hold sideBoard
+          //   this.removeBlockFromSmall(this.blockArray[i], i+1);
+          // }
+          this.removeBlockFromSmall(this.blockArray[0], 3);
+          this.removeBlockFromSmall(this.blockArray[1], 2);
+          this.removeBlockFromSmall(this.blockArray[2], 1);
+
           //add block to blocksArray
           this.createBlocks(1);
+
+          //make new blocks on upcoming
+          this.addBlockToSmall(this.blockArray[1], 3);
+          this.addBlockToSmall(this.blockArray[2], 2);
+          this.addBlockToSmall(this.blockArray[3], 1);
+
+          //pop off front to currentBlock
+          currentBlock = this.blockArray.shift();
 
           //check for rows cleared
           this.linesCleared += this.clearRows();

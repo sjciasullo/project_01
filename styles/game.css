@@ -71,6 +71,27 @@
   padding: 0px;
 }
 
+#up1::before {
+  content:'(1)';
+  position: absolute;
+  margin-left: -81px;
+  margin-top: 15px;
+}
+
+#up2::before {
+  content:'(2)';
+  position: absolute;
+  margin-left: -81px;
+  margin-top: 15px;
+}
+
+#up3::before {
+  content:'(3)';
+  position: absolute;
+  margin-left: -81px;
+  margin-top: 15px;
+}
+
 span {
   color: #B6FF00;
 }
