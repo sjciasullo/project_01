@@ -150,7 +150,24 @@ Cross.prototype.rotate = function(direction) {
 
   //then check testCoords to see if they are valid positions
   let valid = true;
+  //use filter to check if any of the coordinates are out of bounds
+
+  //evaluates to Coord that must be applied for rotate to fit in bounds
+  let boundTransform = testCoords.reduce((result, coord) => {
+    //right bound
+    if(coord.column > 9) {result.column += -1;}
+    //left bound
+    else if(coord.column < 0) {result.column += 1;}
+    //top bound
+    else if(coord.row < 0) {result.row += 1;}
+    //bottom bound
+    else if(coord.row > 19) {result.row -= 1};
+    return result;
+  },new Coordinate(0,0));
+
   for(coord of testCoords) {
+    coord.row += boundTransform.row;
+    coord.column += boundTransform.column;
     if(gameState.boardArray[coord.row][coord.column].occupied) {
       valid = false;
     }
@@ -294,9 +311,9 @@ function Line() {
 
   //rotation coordinates to be added to origin at tiles[0]
   this.right = [new Coordinate(0,1), new Coordinate(0,2), new Coordinate(0,3)];
-  this.down = [new Coordinate(1,0), new Coordinate(2,0), new Coordinate(3,0)];
-  this.left = [new Coordinate(0,-1), new Coordinate(0,-2), new Coordinate(0,-3)];
   this.up = [new Coordinate(-1,0), new Coordinate(-2,0), new Coordinate(-3,0)];
+  this.down = this.up;
+  this.left = this.right;
 }
 
 Line.prototype = Object.create(Cross.prototype);
