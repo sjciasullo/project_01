@@ -671,17 +671,9 @@ const gameState = {
           //pop off front to currentBlock
           currentBlock = this.blockArray.shift();
 
+
           //check for rows cleared
           let rowsCleared = this.clearRows();
-          this.linesCleared += rowsCleared;
-
-          //update linesCleared on scoreboard
-          this.$linesCleared.innerText = `${this.linesCleared}`;
-          if(this.linesCleared % 10 == 0 && this.linesCleared > 0) {
-            this.currentLevel += 1;
-            $currentLevel.innerHTML = this.currentLevel;
-          }
-
           //calculate points to add
           let pointsAdded = 0;
           if(rowsCleared == 1){pointsAdded+=5;}
@@ -692,6 +684,19 @@ const gameState = {
           this.score += pointsAdded;
           this.$score.innerText = this.score;
 
+          //add rows cleared to gameState incrementally so don't miss level change
+          for(let i = 0; i < rowsCleared; i++) {
+            this.linesCleared++;
+            if(this.linesCleared % 10 == 0) {
+              this.currentLevel += 1;
+              this.$currentLevel.innerHTML = this.currentLevel;
+            }
+          }
+
+          //update linesCleared on scoreboard
+          this.$linesCleared.innerText = `${this.linesCleared}`;
+
+
           //check if bigger than highscore and update accordingly
           if(this.score > this.highScore) {
             this.highScore = this.score;
@@ -699,7 +704,6 @@ const gameState = {
             this.$highScore.innerText = this.highScore;
             localStorage.setItem('highScore', `${this.highScore}`)
           }
-
 
           this.addBlockToBoard(currentBlock);
         }
@@ -728,8 +732,8 @@ document.addEventListener('DOMContentLoaded', () => {
   gameState.$linesCleared.innerText = `${gameState.linesCleared}`;
 
   //check for level
-  gameState.currentLevel = localStorage.getItem('level');
-  if(gameState.currentLevel == null) {
+  gameState.currentLevel = parseInt(localStorage.getItem('level'));
+  if(!gameState.currentLevel) {
     gameState.currentLevel = 1;
     localStorage.setItem('level', `${gameState.currentLevel}`)
   }
