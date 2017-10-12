@@ -405,7 +405,7 @@ const gameState = {
   boardArray: [], //array of tiles that make up game board
   blockArray: [], //array of blocks to be added to gameBoard
   smallBoards: [],
-  currentLevel: parseInt(localStorage.getItem('level')), //+ every 10 lnsClrd
+  currentLevel: 1, //+ every 10 lnsClrd
   $currentLevel: document.getElementById('currentLevel'),
   highScore: 0,
   $highScore: document.getElementById('highScore'),
@@ -413,6 +413,7 @@ const gameState = {
   $score: document.getElementById('score'),
   linesCleared: 0, //increases if told to by checkClear
   $linesCleared: document.getElementById('linesCleared'),
+  newHighScore: false,
 
  // ------------------------- methods -------------------------
 
@@ -658,7 +659,8 @@ const gameState = {
       }
     });
 
-    //apply moveDown every amount of milliseconds
+    let ms = 1300 - (this.currentLevel * 80);
+    if(ms < 100) {ms = 100;}
     let intervalN = window.setInterval(() => {
       if(currentBlock.checkDown()) {
         currentBlock.moveDown();
@@ -695,17 +697,39 @@ const gameState = {
           currentBlock = this.blockArray.shift();
 
           //check for rows cleared
-          this.linesCleared += this.clearRows();
+          let rowsCleared = this.clearRows();
+          this.linesCleared += rowsCleared;
+
+          //update linesCleared on scoreboard
+          this.$linesCleared.innerText = `${this.linesCleared}`;
           if(this.linesCleared % 10 == 0 && this.linesCleared > 0) {
             this.currentLevel += 1;
             $currentLevel.innerHTML = this.currentLevel;
-            console.log(`current level has increased to ${this.currentLevel}`)
           }
+
+          //calculate points to add
+          let pointsAdded = 0;
+          if(rowsCleared == 1){pointsAdded+=5;}
+          if(rowsCleared == 2){pointsAdded+=15;}
+          if(rowsCleared == 3){pointsAdded+=30;}
+          if(rowsCleared == 4){pointsAdded+=50;}
+          pointsAdded += pointsAdded * .2 * this.currentLevel;
+          this.score += pointsAdded;
+          this.$score.innerText = this.score;
+
+          //check if bigger than highscore and update accordingly
+          if(this.score > this.highScore) {
+            this.highScore = this.score;
+            this.newHighScore = true;
+            this.$highScore.innerText = this.highScore;
+            localStorage.setItem('highScore', `${this.highScore}`)
+          }
+
 
           this.addBlockToBoard(currentBlock);
         }
       }
-    }, 1200 / this.currentLevel);
+    }, ms);
   },
 }
 
@@ -724,18 +748,27 @@ document.addEventListener('DOMContentLoaded', () => {
   //add event listener to start button which erases start button, then calls gameCreate
 
   //set already known scoreboard into DOM
-  gameState.$currentLevel.innerText = `${gameState.currentLevel}`;
+
   gameState.$score.innerText = `${gameState.score}`;
   gameState.$linesCleared.innerText = `${gameState.linesCleared}`;
+
+  //check for level
+  gameState.currentLevel = localStorage.getItem('level');
+  if(gameState.currentLevel == null) {
+    gameState.currentLevel = 1;
+    localStorage.setItem('level', `${gameState.currentLevel}`)
+  }
+  gameState.$currentLevel.innerText = `${gameState.currentLevel}`;
+
 
   //check for highScore
   gameState.highScore = localStorage.getItem('highScore');
   if(gameState.highScore == null) {
     gameState.highScore = 0;
-    localStorage.setItem('level', `${gameState.highScore}`)
+    localStorage.setItem('highScore', `${gameState.highScore}`)
   }
 
-  //set highScore into gameState and add to DOM
+  //add highscore add to DOM
   gameState.$highScore.innerText = `${gameState.highScore}`;
 
   //
