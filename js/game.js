@@ -425,8 +425,9 @@ const gameState = {
     return finalArr;
   },
 
- // create gameBoard
+ // create gameBoard, hold board, and upcoming boards
   createBoard: function() {
+    //create regular playing board
     const numRows = 20;
     const numColumns = 10;
     this.boardArray = this.createRows(numRows);
@@ -437,6 +438,26 @@ const gameState = {
         $board.appendChild(this.boardArray[i][j].$DOMobj);
       }
     }
+
+    //create board to add to small boards
+    const smallRows = 2;
+    const smallCols = 4;
+    const $hold = document.getElementById('holdBoard');
+    //or get const smallBoards array and just loop through it
+
+    let smallBoard = [];
+    for(let i = 0; i < smallRows; i++) {
+      let row = [];
+      for(let j = 0; j < smallCols; j++) {
+        const tile = new Tile(document.createElement('div'));
+        tile.$DOMobj.className = 'tile unplayed';
+        row.push(tile);
+        //$smallBoards[h].appendChild(tile.$DOMobj);
+        $hold.appendChild(tile.$DOMobj);
+      }
+      smallBoard.push(row);
+    }
+
   },
 
  // create blockArray with numBlocks size and random assortment of blocks
@@ -650,16 +671,15 @@ const gameState = {
 function gameCreate() {
   //create 20row x 10column board using Tile constructor
   gameState.createBoard();
-
-  //create level while block.. create levelBlocksArray and pop a block into current block
+  //gameState.runGame();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  //
+  //add event listener to start button which erases start button, then calls gameCreate
+
   //gameCreate();
 
-  //prompt an enter name and start level
-  //gameState.runGame();
+
 });
 
 
