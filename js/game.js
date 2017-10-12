@@ -524,6 +524,17 @@ const gameState = {
     }
   },
 
+ // add block to small board where index indicates which small board adding to
+  addBlockToSmall: function(block, index) {
+    for(let i = 0; i < block.tiles.length; i++) {
+      //address to change color via boardArray
+      const colorRow = block.tiles[i].row;
+      //subtract 3 to account for smaller board
+      const colorColumn = block.tiles[i].column - 3;
+      this.smallBoards[index][colorRow][colorColumn].$DOMobj.classList.replace('unplayed', `${block.className}`);
+    }
+  },
+
  // set block into position, for end of move
  // returns true if valid entry, false if cannot enter
   setBlockInBoard: function(block) {
