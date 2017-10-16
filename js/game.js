@@ -11,6 +11,7 @@
  *
  * add drop button
  *
+ *
  * add javascript media query to size of board so that it can switch to
  * change to two column layout
  *
@@ -342,6 +343,7 @@ const gameState = {
   $linesCleared: document.getElementById('linesCleared'),
   newHighScore: false,
   holder: null,
+  endGame: false,
 
  // ------------------------- methods -------------------------
 
@@ -586,9 +588,38 @@ const gameState = {
     return newBlock;
   },
 
+  //fixme this is to be run in rungame
+  runTimer: function(currentBlock) {
+    let ms = 1300 - (this.currentLevel * 80);
+    if (ms < 100) {ms = 100;}
+    let intervalN = window.setInterval(() => {
+      //move the current block down if it can
+      if(currentBlock.checkDown()) {
+        currentBlock.moveDown();
+      } else {
+        //clear the timer
+        window.clearInterval(intervalN);
+
+        //delay the place block
+        window.setTimeout( () => {
+          if(currentBlock.checkDown()) {
+            currentBlock.moveDown();
+          } else {
+            //set endgame to the whether or not block could be set
+            this.endGame = !(this.setBlockInBoard(currentblock));
+
+            //if the game ended run the endgameStuff
+
+            //else make the new blocks
+          }
+        },ms)
+
+      }
+    }, ms);
+  },
+
   runGame: function() {
     //create 4 blocks, 1 to be added and 3 for upcoming blocks
-    let endGame = false;
 
     this.createBlocks(4);
 
@@ -637,8 +668,8 @@ const gameState = {
         // console.log('Block finished');
 
         //set current block in board
-        endGame = !(this.setBlockInBoard(currentBlock));
-        if(endGame) {
+        this.endGame = !(this.setBlockInBoard(currentBlock));
+        if(this.endGame) {
           console.log('ur game is over, fool');
           window.clearInterval(intervalN);
 
